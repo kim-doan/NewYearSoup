@@ -3,8 +3,12 @@ import Layout from '../components/layout'
 import { auth, database } from '../firebase'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { onValue, ref } from '@firebase/database';
+import { useDispatch } from "react-redux";
+import { userAction } from "./auth/slice";
 
 const IndexPage = () => {
+    const dispatch = useDispatch();
+
     const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -76,8 +80,8 @@ const IndexPage = () => {
     const handleSignup = async () => {
         try {
             clearErrors();
-            const user = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(user);
+            const result = await createUserWithEmailAndPassword(auth, email, password);
+            dispatch(userAction.setProfile(result.user));
         } catch (err) {
             switch (err.code) {
                 case "auth/email-already-in-use":
