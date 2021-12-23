@@ -1,0 +1,26 @@
+{
+  "esModuleInterop": true,
+  "files": [
+    "./css.d.ts"
+  ],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "strict": false,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "plugins": [
+      {
+        "name": "gatsby-plugin-typescript"
+      }
+    ]
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "public", ".cache"]
+}

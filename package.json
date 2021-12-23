@@ -21,9 +21,12 @@
     "axios": "^0.24.0",
     "firebase": "^9.6.1",
     "gatsby": "^4.4.0",
+    "gatsby-plugin-google-fonts": "^1.0.1",
     "gatsby-plugin-mdx": "^3.4.0",
     "gatsby-plugin-sharp": "^4.4.0",
+    "gatsby-plugin-typescript": "^4.4.0",
     "gatsby-source-filesystem": "^4.4.0",
+    "gatsby-transformer-typescript-css-modules": "^1.0.14",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.3.1",
@@ -38,6 +41,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/styled-components": "^5.1.18",
     "@types/styled-components-react-native": "^5.1.3",
-    "babel-plugin-styled-components": "^2.0.2"
+    "babel-plugin-styled-components": "^2.0.2",
+    "typescript": "^4.5.4"
   }
 }

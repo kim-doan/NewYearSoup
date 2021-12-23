@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { User } from '../types/User'
 
-const endpoint = 'https://up-dolphin-98.hasura.app/api/rest/MyMutation'
+const endpoint = 'https://up-dolphin-98.hasura.app/v1/graphql'
 
 const instance = axios.create({
     baseURL: endpoint,
