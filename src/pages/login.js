@@ -16,34 +16,6 @@ const IndexPage = () => {
     const [passwordError, setPasswordError] = useState('');
     const [hasAccount, setHasAccount] = useState(false);
 
-    useEffect(() => {
-        return auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                console.log(user)
-                const idTokenResult = await user.getIdTokenResult();
-                console.log(idTokenResult);
-                const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
-
-                console.log(hasuraClaim)
-                if (hasuraClaim) {
-                    console.log({ hasuraClaim });
-                } else {
-                    const metadataRef = ref(database, 'metadata/' + user.uid + '/refreshTime');
-                    console.log(metadataRef)
-                    onValue(metadataRef, async (snapshot) => {
-                        if (snapshot.exists()) {
-                            await user.getIdToken(true);
-                            const idTokenResult = await user.getIdTokenResult();
-                            const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
-                            console.log(hasuraClaim);
-                            console.log({ hasuraClaim });
-                        }
-                    })
-                }
-            }
-        })
-      }, []);
-
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
     });

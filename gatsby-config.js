@@ -12,6 +12,17 @@ module.exports = {
         path: `${__dirname}/blog`,
       }
     },
+    {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [
+          `Noto+Serif+KR\:100,300,400,500,700,900`
+          ],
+        display: "swap",
+      },
+    },
     "gatsby-plugin-mdx",
+    "gatsby-transformer-typescript-css-modules",
+    `gatsby-plugin-typescript`,
   ],
 };
