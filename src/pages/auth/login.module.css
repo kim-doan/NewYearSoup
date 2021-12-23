@@ -9,11 +9,24 @@ button {
   border: none;
   outline: none;
   width: 100%;
-  padding: 15px 0;
+  padding: 12px 0;
   color: #fff;
   font-size: 16px;
   letter-spacing: 1px;
   background: #9c4b3a;
+  cursor: pointer;
+  font-family: "Noto Serif KR";
+}
+
+.serviceLogin {
+  border: #9c4b3a 2px solid;
+  width: 100%;
+  padding: 12px 0;
+  margin-bottom: 10px;
+  color: #9c4b3a;
+  font-size: 16px;
+  letter-spacing: 1px;
+  background: transparent;
   cursor: pointer;
   font-family: "Noto Serif KR";
 }
@@ -36,32 +49,34 @@ button {
 }
 
 .login .loginContainer label {
-  color: black;
-  margin: 14px 0;
+  color: #9c4b3a;
+  margin: 12px 0;
   display: block;
-  font-size: 22px;
+  font-size: 17px;
   line-height: 1;
+  font-weight: 500;
 }
 
 .login .loginContainer input {
   border: none;
   outline: none;
-  font-size: 19px;
+  font-size: 16px;
   padding: 15px;
   background: #e2ded0;
-  color: darkgray;
+  color: #693328;
   letter-spacing: 1px;
 }
 
 .login .loginContainer .btnContainer {
   width: 100%;
-  padding: 24px 0;
+  /* padding: 24px 0; */
 }
 
 .login .loginContainer .btnContainer p {
-  margin: 14px 0 0 0;
-  text-align: right;
-  color: #fff;
+  margin: 14px 0 14px 0;
+  font-weight: 500;
+  text-align: left;
+  color: #9c4b3a;
 }
 
 .login .loginContainer .btnContainer p span {

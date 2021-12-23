@@ -38,12 +38,16 @@ const LoginPage = () => {
         } catch (err) {
             switch (err.code) {
                 case "auth/invalid-email":
+                    setEmailError("이메일 양식에 맞지않아요.");
+                    break;
                 case "auth/user-disabled":
+                    setEmailError("계정이 차단되었어요.");
+                    break;
                 case "auth/user-not-found":
-                    setEmailError(err.message);
+                    setEmailError("가입내역을 찾을 수 없어요.");
                     break;
                 case "auth/wrong-password":
-                    setPasswordError(err.message);
+                    setPasswordError("비밀번호가 틀렸어요.");
                     break;
             }
         }
@@ -71,48 +75,51 @@ const LoginPage = () => {
     const handleLogout = async () => {
         await signOut(auth);
     };
-    
+
     return (
-            <Layout pageTitle="Login">
+        <Layout pageTitle="Login">
             <section className={style.login}>
-                    <div className={style.loginContainer}>
-                        <label>이메일</label>
-                        <input
-                        
-                            type="text"
-                            autoFocus
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <p className="errorMsg">{emailError}</p>
-                        <label>패스워드</label>
-                        <input
-                            type="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <p className="errorMsg">{passwordError}</p>
-                        <div className="btnContainer">
-                            {hasAccount ? (
-                                <>
-                                    <button onClick={handleLogin}>Sign in</button>
-                                    <p>Don't hav an accout ?
-                                        <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
-                                </>
-                            ) : (
-                                <>
-                                    <button onClick={handleSignup}>회원가입</button>
-                                    <p>Have an account?
-                                        <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
-                                </>
-                            )}
-                            <button onClick={handleLogout}>로그아웃</button>
-                        </div>
+                <div className={style.loginContainer}>
+                    <label>이메일</label>
+                    <input
+                        type="text"
+                        autoFocus
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <p className="errorMsg">{emailError}</p>
+                    <label>비밀번호</label>
+                    <input
+                        type="password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <p className={style.errorMsg}>{passwordError}</p>
+                    <div className={style.btnContainer}>
+                        <button onClick={handleLogin}>떡국 만들러가기</button>
+                        <p>다른 서비스 계정으로 로그인</p>
+                        <button className={style.serviceLogin} onClick={handleSignup}>구글 계정으로 로그인</button>
+                        <button className={style.serviceLogin} onClick={handleSignup}>페이스북 계정으로 로그인</button>
+                        {/* {hasAccount ? (
+                            <>
+                                <button onClick={handleLogin}>로그인</button>
+                                <p>Don't hav an accout ?
+                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
+                            </>
+                        ) : (
+                            <>
+                                <button onClick={handleSignup}>회원가입</button>
+                                <p>Have an account?
+                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
+                            </>
+                        )}
+                        <button onClick={handleLogout}>로그아웃</button> */}
                     </div>
-                </section>
-            </Layout>
+                </div>
+            </section>
+        </Layout>
     );
 }
 

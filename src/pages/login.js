@@ -73,47 +73,47 @@ const IndexPage = () => {
     };
 
 
-  return (
-    <Layout pageTitle="Login">
-        <section className="login">
-            <div className="loginContainer">
-                  <label>Username</label>      
-                  <input
-                      type="text"
-                      authFocus
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <p className="errorMsg">{emailError}</p>
-                  <label>Password</label>
-                  <input
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <p className="errorMsg">{passwordError}</p>
-                  <div classNAme="btnContainer">
-                      {hasAccount ? (
-                          <>
-                              <button onClick={handleLogin}>Sign in</button>
-                              <p>Don't hav an accout ?
-                                  <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
-                          </>
-                      ): (
-                          <>
-                              <button onClick={handleSignup}>Sign up</button>
-                                  <p>Have an account?
-                                      <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
-                          </>    
-                      )}
-                      <button onClick={handleLogout}>logout</button>
-                  </div>
-            </div>
-      </section>
-    </Layout>
-  )
+    return (
+        <Layout pageTitle="Login">
+            <section className="login">
+                <div className="loginContainer">
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        authFocus
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <p className="errorMsg">{emailError}</p>
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <p className="errorMsg">{passwordError}</p>
+                    <div classNAme="btnContainer">
+                        {hasAccount ? (
+                            <>
+                                <button onClick={handleLogin}>Sign in</button>
+                                <p>Don't hav an accout ?
+                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
+                            </>
+                        ) : (
+                            <>
+                                <button onClick={handleSignup}>Sign up</button>
+                                <p>Have an account?
+                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
+                            </>
+                        )}
+                        <button onClick={handleLogout}>logout</button>
+                    </div>
+                </div>
+            </section>
+        </Layout>
+    )
 }
 
 export default IndexPage

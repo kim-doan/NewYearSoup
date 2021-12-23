@@ -17,12 +17,12 @@ module.exports = {
       options: {
         fonts: [
           `Noto+Serif+KR\:100,300,400,500,700,900`
-          ],
+        ],
         display: "swap",
       },
     },
     "gatsby-plugin-mdx",
-    "gatsby-transformer-typescript-css-modules",
+    //"gatsby-transformer-typescript-css-modules",
     `gatsby-plugin-typescript`,
   ],
 };

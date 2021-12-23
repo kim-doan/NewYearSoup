@@ -8,8 +8,8 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 
 const Nav = styled.div`
-  background: #15171c;
-  height: 80px;
+  background: #693328;
+  height: 50px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -43,11 +43,11 @@ const SidebarWrap = styled.div`
 
 
 const SideBar = ({ pageTitle, children }) => {
-    const [sidebar, setSidebar] = React.useState(false);
-    const showSidebar = () => setSidebar(!sidebar);
+  const [sidebar, setSidebar] = React.useState(false);
+  const showSidebar = () => setSidebar(!sidebar);
 
-    return (
-            <div>
+  return (
+    <div>
       <IconContext.Provider value={{ color: '#fff' }}>
         <Nav>
           <NavIcon to='#'>
@@ -66,7 +66,7 @@ const SideBar = ({ pageTitle, children }) => {
         </SidebarNav>
       </IconContext.Provider>
     </div>
-    )
+  )
 }
 
 export default SideBar
