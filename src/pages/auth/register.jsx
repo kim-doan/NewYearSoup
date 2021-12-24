@@ -4,17 +4,21 @@ import { auth } from '../../firebase'
 import Layout from '../../components/layout'
 import { userAction } from "./slice";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import * as style from './login.module.css';
+import * as style from './register.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const dispatch = useDispatch();
 
     // const [user, setUser] = useState(User);
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [nameError, setNameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [passwordConfirmError, setPasswordConfirmError] = useState('');
     const [hasAccount, setHasAccount] = useState(false);
 
     // onAuthStateChanged(auth, (currentUser) => {
@@ -28,7 +32,9 @@ const LoginPage = () => {
 
     const clearErrors = () => {
         setEmailError('');
+        setNameError('');
         setPasswordError('');
+        setPasswordConfirmError('');
     }
 
     const handleLogin = async () => {
@@ -56,12 +62,21 @@ const LoginPage = () => {
     const handleSignup = async () => {
         try {
             clearErrors();
+            if (name.length < 2 && name.length > 6) {
+                setNameError('닉네임을 2 ~ 6자 이내로 정해주세요.')
+            }
+            if (password !== passwordConfirm) {
+                setPasswordConfirmError('비밀번호를 다시 확인해주세요.')
+            }
             const result = await createUserWithEmailAndPassword(auth, email, password);
             dispatch(userAction.setProfile(result.user));
         } catch (err) {
             switch (err.code) {
                 case "auth/email-already-in-use":
+                    setEmailError("이미 사용중인 이메일이에요.");
                 case "auth/invalid-email":
+                    setEmailError("이메일 양식에 맞지않아요.");
+                    break;
                 case "auth/user-not-found":
                     setEmailError(err.message);
                     break;
@@ -78,8 +93,8 @@ const LoginPage = () => {
 
     return (
         <Layout pageTitle="로그인">
-            <section className={style.login}>
-                <div className={style.loginContainer}>
+            <section className={style.register}>
+                <div className={style.registerContainer}>
                     <label>이메일</label>
                     <input
                         type="text"
@@ -89,6 +104,14 @@ const LoginPage = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <p className="errorMsg">{emailError}</p>
+                    <label>닉네임</label>
+                    <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                    <p className="errorMsg">{nameError}</p>
                     <label>비밀번호</label>
                     <input
                         type="password"
@@ -97,26 +120,17 @@ const LoginPage = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <p className={style.errorMsg}>{passwordError}</p>
+                    <label>비밀번호 확인</label>
+                    <input
+                        type="password"
+                        required
+                        value={passwordConfirm}
+                        onChange={(e) => setPasswordConfirm(e.target.value)}
+                    />
+                    <p className={style.errorMsg}>{passwordConfirmError}</p>
                     <div className={style.btnContainer}>
-                        <button onClick={handleLogin}>떡국 만들러가기</button>
-                        <button className={style.outlineButton} onClick={handleLogin}>회원가입</button>
-                        <p>다른 서비스 계정으로 로그인</p>
-                        <button className={style.outlineButton} onClick={handleSignup}><FaGoogle /> 구글 계정으로 로그인</button>
-                        <button className={style.outlineButton} onClick={handleSignup}><FaFacebook /> 페이스북 계정으로 로그인</button>
-                        {/* {hasAccount ? (
-                            <>
-                                <button onClick={handleLogin}>로그인</button>
-                                <p>Don't hav an accout ?
-                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={handleSignup}>회원가입</button>
-                                <p>Have an account?
-                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
-                            </>
-                        )}
-                        <button onClick={handleLogout}>로그아웃</button> */}
+                        <button onClick={handleSignup}>떡국 만들러가기</button>
+                        <button className={style.outlineButton} onClick={handleLogin}>로그인 하러가기</button>
                     </div>
                 </div>
             </section>
@@ -124,4 +138,4 @@ const LoginPage = () => {
     );
 }
 
-export default LoginPage
+export default RegisterPage
