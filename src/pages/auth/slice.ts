@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { User } from '../../types/User'
 export const initialState = {
+    success: false,
     isLoading: false,
     msg: "",
     error: "",
@@ -8,21 +8,23 @@ export const initialState = {
 }
 
 const reducers = {
-    setProfile: (state, { payload: { uid, email } } ) => {
-        state.isLoading = true
-        console.log(uid)
-        console.log(email)
+    setProfile: (state, { payload: { uid, email, name } } ) => {
+        state.isLoading = true;
+        state.success = false;
 
         state.profile = {
             "userId": uid,
-            "userName": email
+            "userEmail": email,
+            "userName": name,
         }
     },
-    setProfileSuccess: (state, { payload: { data } }) => {
-        state.isLoading = false
-        state.profile = data;
+    setProfileSuccess: (state, payload) => {
+        state.success = true;
+        state.isLoading = false;
     },
     setProfileFail: (state, { payload: error }) => {
+        state.isLoading = false;
+        state.success = false;
         state.error = error
     },
 }
@@ -34,6 +36,11 @@ const slice = createSlice({
     initialState,
     reducers
 })
+
+const selectSuccessSate = createSelector(
+    (state) => state.success,
+    (success) => success
+)
 
 const selectLoadingState = createSelector(
     (state) => state.isLoading,
@@ -56,12 +63,14 @@ const selectProfileState = createSelector(
 )
 
 const selectAllState = createSelector(
+    selectSuccessSate,
     selectLoadingState,
     selectErrorState,
     selectMsgState,
     selectProfileState,
-    (isLoading, error, msg, profile) => {
+    (success, isLoading, error, msg, profile) => {
         return {
+            success,
             isLoading,
             error,
             msg,
@@ -71,6 +80,7 @@ const selectAllState = createSelector(
 )
 
 export const userSelector = {
+    success: (state) => selectSuccessSate(state[USER]),
     isLoading: (state) => selectLoadingState(state[USER]),
     error: (state) => selectErrorState(state[USER]),
     msg: (state) => selectMsgState(state[USER]),

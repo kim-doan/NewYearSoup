@@ -10,7 +10,7 @@ export function* setUser() {
 
         const result = yield call(Auth.setUser, profile)
 
-        console.log(result)
+        yield put(setProfileSuccess(result));
     } catch (err) {
         yield put(setProfileFail(err));
     }

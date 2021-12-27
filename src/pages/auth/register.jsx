@@ -21,9 +21,11 @@ const RegisterPage = () => {
     const [passwordConfirmError, setPasswordConfirmError] = useState('');
     const [hasAccount, setHasAccount] = useState(false);
 
-    // onAuthStateChanged(auth, (currentUser) => {
-    //     setUser(currentUser);
-    // });
+    onAuthStateChanged(auth, (currentUser) => {
+        // setUser(currentUser);
+
+        console.log("test");
+    });
 
     const clearInputs = () => {
         setEmail('');
@@ -69,19 +71,26 @@ const RegisterPage = () => {
                 setPasswordConfirmError('비밀번호를 다시 확인해주세요.')
             }
             const result = await createUserWithEmailAndPassword(auth, email, password);
+
+            result.user = {
+                ...result.user,
+                name,
+            }
+
             dispatch(userAction.setProfile(result.user));
         } catch (err) {
             switch (err.code) {
                 case "auth/email-already-in-use":
                     setEmailError("이미 사용중인 이메일이에요.");
+                    break;
                 case "auth/invalid-email":
-                    setEmailError("이메일 양식에 맞지않아요.");
+                    setEmailError("유효하지 않은 메일이에요.");
                     break;
                 case "auth/user-not-found":
-                    setEmailError(err.message);
+                    setEmailError("사용자 정보를 찾을 수 없어요.");
                     break;
                 case "auth/weak-password":
-                    setPasswordError(err.message);
+                    setPasswordError("비밀번호는 6자리 이상의 문자가 필요해요.");
                     break;
             }
         }

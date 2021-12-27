@@ -6,9 +6,9 @@ const endpoint = 'https://up-dolphin-98.hasura.app/v1/graphql'
 const instance = axios.create({
     baseURL: endpoint,
     timeout: 15000,
-    headers: {
-        'x-hasura-admin-secret': "vGgKCJNTQyy1C3nIKFIBzJzsIFmLQAgBRACmoupWJZW5kG6rXwCsX2USUVAujpXf"
-    }
+    // headers: {
+    //     'x-hasura-admin-secret': "vGgKCJNTQyy1C3nIKFIBzJzsIFmLQAgBRACmoupWJZW5kG6rXwCsX2USUVAujpXf"
+    // }
 })
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -17,16 +17,16 @@ const request = {
     setUser: (user: User) => instance.post(endpoint, {
         query:
             `
-        mutation MyMutation($userId: String!, $userName: String!) {
-            insert_USER_one(object: {USER_ID: $userId, USER_NAME: $userName}) {
-                USER_ID
-                USER_NAME
+        mutation MyMutation($userId: String!, $userName: String!, $userEmail: String!) {
+            insert_USER(objects: {USER_EMAIL: $userEmail, USER_ID: $userId, USER_NAME: $userName}) {
+            affected_rows
             }
         }
         `,
         variables: {
             userId: user.userId,
-            userName: user.userName
+            userName: user.userName,
+            userEmail: user.userEmail,
         }
     }).then(responseBody)
 }
