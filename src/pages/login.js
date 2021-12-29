@@ -34,7 +34,6 @@ const IndexPage = () => {
         try {
             clearErrors();
             const user = await signInWithEmailAndPassword(auth, email, password);
-            console.log(user);
         } catch (err) {
             switch (err.code) {
                 case "auth/invalid-email":

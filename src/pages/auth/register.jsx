@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux";
 import { auth } from '../../firebase'
 import Layout from '../../components/layout'
 import { userAction } from "./slice";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import * as style from './register.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { navigate } from "gatsby";
 
 const RegisterPage = () => {
     const dispatch = useDispatch();
@@ -23,8 +24,6 @@ const RegisterPage = () => {
 
     onAuthStateChanged(auth, (currentUser) => {
         // setUser(currentUser);
-
-        console.log("test");
     });
 
     const clearInputs = () => {
@@ -72,12 +71,8 @@ const RegisterPage = () => {
             }
             const result = await createUserWithEmailAndPassword(auth, email, password);
 
-            result.user = {
-                ...result.user,
-                name,
-            }
-
-            dispatch(userAction.setProfile(result.user));
+            await updateProfile(result.user, { displayName: name });
+            await handleLogin();
         } catch (err) {
             switch (err.code) {
                 case "auth/email-already-in-use":
@@ -139,7 +134,7 @@ const RegisterPage = () => {
                     <p className={style.errorMsg}>{passwordConfirmError}</p>
                     <div className={style.btnContainer}>
                         <button onClick={handleSignup}>떡국 만들러가기</button>
-                        <button className={style.outlineButton} onClick={handleLogin}>로그인 하러가기</button>
+                        <button className={style.outlineButton} onClick={() => {navigate("/auth/login")}}>로그인 하러가기</button>
                     </div>
                 </div>
             </section>

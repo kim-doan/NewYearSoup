@@ -3,18 +3,14 @@ import { User } from '../types/User'
 
 const endpoint = 'https://up-dolphin-98.hasura.app/v1/graphql'
 
-const instance = axios.create({
-    baseURL: endpoint,
-    timeout: 15000,
-    // headers: {
-    //     'x-hasura-admin-secret': "vGgKCJNTQyy1C3nIKFIBzJzsIFmLQAgBRACmoupWJZW5kG6rXwCsX2USUVAujpXf"
-    // }
-})
+axios.defaults.baseURL = endpoint;
+axios.defaults.timeout = 15000;
 
 const responseBody = (response: AxiosResponse) => response.data;
 
 const request = {
-    setUser: (user: User) => instance.post(endpoint, {
+    //사용자 등록 (회원가입)
+    setUser: (user: User) => axios.post(endpoint, {
         query:
             `
         mutation MyMutation($userId: String!, $userName: String!, $userEmail: String!) {
@@ -27,10 +23,27 @@ const request = {
             userId: user.userId,
             userName: user.userName,
             userEmail: user.userEmail,
+        },
+    }).then(responseBody),
+    //회원가입 여부
+    isSignUp: (user: User) => axios.post(endpoint, {
+        query:
+            `
+            query isSignUp($userId: String!) {
+                USER_aggregate(where: {USER_ID: {_eq: $userId}}) {
+                    aggregate {
+                        count
+                    }
+                }
+            }
+        `,
+        variables: {
+            userId: user.userId
         }
-    }).then(responseBody)
+    }).then(responseBody),
 }
 
 export const Auth = {
     setUser: (user: User): Promise<User> => request.setUser(user),
+    isSignUp: (user: User): Promise<Number> => request.isSignUp(user)
 }

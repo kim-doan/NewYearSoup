@@ -2,31 +2,60 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 export const initialState = {
     success: false,
     isLoading: false,
+    isSignUp: false,
     msg: "",
     error: "",
     profile: null,
+    authUser: null,
 }
 
 const reducers = {
-    setProfile: (state, { payload: { uid, email, name } } ) => {
+    setAuthUser: (state, { payload: { user } }) => {
+        state.authUser = user;
+    },
+    setUserLoad: (state, { payload: { uid, email, displayName } }) => {
         state.isLoading = true;
         state.success = false;
 
         state.profile = {
             "userId": uid,
             "userEmail": email,
-            "userName": name,
+            "userName": displayName,
         }
     },
-    setProfileSuccess: (state, payload) => {
-        state.success = true;
+    setUserSuccess: (state, payload) => {
         state.isLoading = false;
+        state.success = true;
     },
-    setProfileFail: (state, { payload: error }) => {
+    setUserFail: (state, { payload: error }) => {
         state.isLoading = false;
         state.success = false;
         state.error = error
     },
+    isSignUpLoad: (state, { payload: { uid } }) => {
+        state.isLoading = true;
+        state.isSignUp = false;
+        state.success = false;
+
+        state.profile = {
+            "userId": uid
+        }
+    },
+    isSignUpSuccess: (state, { payload: { count } }) => {
+        state.isLoading = false;
+        state.success = false;
+
+        if (count > 0) {
+            state.isSignUp = true;
+        } else {
+            state.isSignUp = false;
+        }
+    },
+    isSignUpFail: (state, { payload: { payload: error } }) => {
+        state.isLoading = false;
+        state.success = false;
+        state.error = error;
+    }
 }
 
 const name = "USER"
@@ -47,6 +76,11 @@ const selectLoadingState = createSelector(
     (isLoading) => isLoading
 )
 
+const selectSignUpState = createSelector(
+    (state) => state.isSignUp,
+    (isSignUp) => isSignUp
+)
+
 const selectErrorState = createSelector(
   (state) => state.error,
   (error) => error
@@ -62,29 +96,19 @@ const selectProfileState = createSelector(
     (profile) => profile
 )
 
-const selectAllState = createSelector(
-    selectSuccessSate,
-    selectLoadingState,
-    selectErrorState,
-    selectMsgState,
-    selectProfileState,
-    (success, isLoading, error, msg, profile) => {
-        return {
-            success,
-            isLoading,
-            error,
-            msg,
-            profile
-        }
-    }
+const selectAuthUserState = createSelector(
+    (state) => state.authUser,
+    (authUser) => authUser
 )
 
 export const userSelector = {
     success: (state) => selectSuccessSate(state[USER]),
     isLoading: (state) => selectLoadingState(state[USER]),
+    isSignUp: (state) => selectSignUpState(state[USER]),
     error: (state) => selectErrorState(state[USER]),
     msg: (state) => selectMsgState(state[USER]),
-    profile: (state) => selectProfileState(state[USER])
+    profile: (state) => selectProfileState(state[USER]),
+    authUser: (state) => selectAuthUserState(state[USER]),
 }
 
 export const USER = slice.name

@@ -6,20 +6,13 @@ import { userAction } from "./slice";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import * as style from './login.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { navigate } from "gatsby";
 
 const LoginPage = () => {
-    const dispatch = useDispatch();
-
-    // const [user, setUser] = useState(User);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const [hasAccount, setHasAccount] = useState(false);
-
-    // onAuthStateChanged(auth, (currentUser) => {
-    //     setUser(currentUser);
-    // });
 
     const clearInputs = () => {
         setEmail('');
@@ -51,26 +44,15 @@ const LoginPage = () => {
                     break;
             }
         }
+
+        clearInputs();
     };
 
-    const handleSignup = async () => {
-        try {
-            clearErrors();
-            const result = await createUserWithEmailAndPassword(auth, email, password);
-            dispatch(userAction.setProfile(result.user));
-        } catch (err) {
-            switch (err.code) {
-                case "auth/email-already-in-use":
-                case "auth/invalid-email":
-                case "auth/user-not-found":
-                    setEmailError(err.message);
-                    break;
-                case "auth/weak-password":
-                    setPasswordError(err.message);
-                    break;
-            }
+    const onKeyPress = (e) => {
+        if (e.key == 'Enter') {
+            handleLogin();
         }
-    };
+    }
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -98,25 +80,12 @@ const LoginPage = () => {
                     />
                     <p className={style.errorMsg}>{passwordError}</p>
                     <div className={style.btnContainer}>
-                        <button onClick={handleLogin}>떡국 만들러가기</button>
-                        <button className={style.outlineButton} onClick={handleLogin}>회원가입</button>
+                        <button onClick={handleLogin} onKeyPress={onKeyPress}>떡국 만들러가기</button>
+                        <button className={style.outlineButton} onClick={()=>{navigate("/auth/register")}}>회원가입 하러가기</button>
                         <p>다른 서비스 계정으로 로그인</p>
-                        <button className={style.outlineButton} onClick={handleSignup}><FaGoogle /> 구글 계정으로 로그인</button>
-                        <button className={style.outlineButton} onClick={handleSignup}><FaFacebook /> 페이스북 계정으로 로그인</button>
-                        {/* {hasAccount ? (
-                            <>
-                                <button onClick={handleLogin}>로그인</button>
-                                <p>Don't hav an accout ?
-                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span></p>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={handleSignup}>회원가입</button>
-                                <p>Have an account?
-                                    <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
-                            </>
-                        )}
-                        <button onClick={handleLogout}>로그아웃</button> */}
+                        <button className={style.outlineButton} onClick={handleLogin}><FaGoogle /> 구글 계정으로 로그인</button>
+                        <button className={style.outlineButton} onClick={handleLogin}><FaFacebook /> 페이스북 계정으로 로그인</button>
+                        {/* <button onClick={handleLogout}>로그아웃</button> */}
                     </div>
                 </div>
             </section>

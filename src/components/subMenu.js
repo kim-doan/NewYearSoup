@@ -77,7 +77,7 @@ const SubMenu = ({ item }) => {
                     </div>
                 </Dropdown>
           :
-                          <SidebarLink SidebarLink to={item.path} onClick={item.subNav && showSubnav}>
+                          <SidebarLink to={item.path} onClick={item.subNav && showSubnav}>
                     <div>
                         {item.icon}
                         <SidebarLabel>{item.title}</SidebarLabel>
