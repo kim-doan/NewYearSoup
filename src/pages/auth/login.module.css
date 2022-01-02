@@ -39,7 +39,7 @@ button {
 }
 
 .login .loginContainer {
-  padding: 60px;
+  padding: 30px 60px 30px 60px;
   width: 100%;
   min-height: 600px;
   display: flex;
@@ -49,6 +49,11 @@ button {
   background-image: url("../../../assets/img/authBg.png");
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.authLogo {
+  max-width: 250px;
+  margin: auto;
 }
 
 .login .loginContainer label {

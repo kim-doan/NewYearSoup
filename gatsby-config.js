@@ -4,13 +4,22 @@ module.exports = {
     title: "Notion-Mini",
   },
   plugins: [
+    "gatsby-transformer-sharp",
+    "gatsby-plugin-image",
     "gatsby-plugin-sharp",
+    // {
+    //   resolve: "gatsby-source-filesystem",
+    //   options: {
+    //     name: `blog`,
+    //     path: `${__dirname}/blog`,
+    //   },
+    // },
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        name: `blog`,
-        path: `${__dirname}/blog`,
-      }
+        name: `assets`,
+        path: `${__dirname}/assets/img`,
+      },
     },
     {
       resolve: `gatsby-plugin-google-fonts`,

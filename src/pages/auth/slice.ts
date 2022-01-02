@@ -7,6 +7,7 @@ export const initialState = {
     error: "",
     profile: null,
     authUser: null,
+    userIdArr: [],
 }
 
 const reducers = {
@@ -32,13 +33,15 @@ const reducers = {
         state.success = false;
         state.error = error
     },
-    isSignUpLoad: (state, { payload: { uid } }) => {
+    isSignUpLoad: (state, { payload: { uid, email, displayName } }) => {
         state.isLoading = true;
         state.isSignUp = false;
         state.success = false;
 
         state.profile = {
-            "userId": uid
+            "userId": uid,
+            "userEmail": email,
+            "userName": displayName
         }
     },
     isSignUpSuccess: (state, { payload: { count } }) => {
@@ -52,6 +55,20 @@ const reducers = {
         }
     },
     isSignUpFail: (state, { payload: { payload: error } }) => {
+        state.isLoading = false;
+        state.success = false;
+        state.error = error;
+    },
+    getAllUserIdLoad: (state, payload) => {
+        state.isLoading = false;
+        state.success = false;
+    },
+    getAllUserIdSuccess: (state, { payload: { userIdArr } }) => {
+        state.isLoading = true;
+        state.success = true;
+        state.userIdArr = userIdArr;
+    },
+    getAllUserIdFail: (state, { payload: { payload: error } }) => {
         state.isLoading = false;
         state.success = false;
         state.error = error;
@@ -82,13 +99,13 @@ const selectSignUpState = createSelector(
 )
 
 const selectErrorState = createSelector(
-  (state) => state.error,
-  (error) => error
+    (state) => state.error,
+    (error) => error
 )
 
 const selectMsgState = createSelector(
-  (state) => state.msg,
-  (msg) => msg
+    (state) => state.msg,
+    (msg) => msg
 )
 
 const selectProfileState = createSelector(
@@ -101,6 +118,11 @@ const selectAuthUserState = createSelector(
     (authUser) => authUser
 )
 
+const selectUserIdArrState = createSelector(
+    (state) => state.userIdArr,
+    (userIdArr) => userIdArr
+)
+
 export const userSelector = {
     success: (state) => selectSuccessSate(state[USER]),
     isLoading: (state) => selectLoadingState(state[USER]),
@@ -109,6 +131,7 @@ export const userSelector = {
     msg: (state) => selectMsgState(state[USER]),
     profile: (state) => selectProfileState(state[USER]),
     authUser: (state) => selectAuthUserState(state[USER]),
+    userIdArr: (state) => selectUserIdArrState(state[USER]),
 }
 
 export const USER = slice.name

@@ -9,7 +9,7 @@ import {
   navLinkItem,
   navLinkText,
   siteTitle,
-  
+
 } from './layout.module.css'
 import SideBar from './sidebar'
 import { userAction, userSelector } from '../pages/auth/slice';
@@ -18,7 +18,6 @@ import axios from 'axios';
 
 const Layout = ({ pageTitle, children }) => {
   const dispatch = useDispatch();
-  const isSignUp = useSelector(userSelector.isSignUp);
 
   useEffect(() => {
     return auth.onAuthStateChanged(async (user) => {
@@ -27,14 +26,6 @@ const Layout = ({ pageTitle, children }) => {
         const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
         console.log(hasuraClaim);
         dispatch(userAction.isSignUpLoad(user));
-
-        if (isSignUp) {
-          if (user.displayName != null) {
-            dispatch(userAction.setUserLoad(user));
-          }
-        } else {
-          dispatch(userAction.setAuthUser(user));
-        }
 
         if (hasuraClaim) {
           axios.defaults.headers.common["x-hasura-allowed-roles"] = hasuraClaim["x-hasura-allowed-roles"];
@@ -49,7 +40,7 @@ const Layout = ({ pageTitle, children }) => {
               await user.getIdToken(true);
               const idTokenResult = await user.getIdTokenResult();
               const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
-              
+
               axios.defaults.headers.common["x-hasura-allowed-roles"] = hasuraClaim["x-hasura-allowed-roles"];
               axios.defaults.headers.common["x-hasura-default-role"] = hasuraClaim["x-hasura-default-role"];
               axios.defaults.headers.common["x-hasura-user-id"] = hasuraClaim["x-hasura-user-id"];
@@ -71,12 +62,12 @@ const Layout = ({ pageTitle, children }) => {
     }
   `)
 
-    return (
-        <div>
-    <div className={container}>
-          <title>{pageTitle} | {data.site.siteMetadata.title}</title>
-          <SideBar></SideBar>
-      {/* <nav>
+  return (
+    <div>
+      <div className={container}>
+        <title>{pageTitle} | {data.site.siteMetadata.title}</title>
+        <SideBar></SideBar>
+        {/* <nav>
         <ul className={navLinks}>
           <li className={navLinkItem}>
             <Link to="/" className={navLinkText}>
@@ -95,11 +86,11 @@ const Layout = ({ pageTitle, children }) => {
           </li>
         </ul>
       </nav> */}
-      <main>
-        {children}
-      </main>
-            </div>
-            </div>
+        <main>
+          {children}
+        </main>
+      </div>
+    </div>
   )
 }
 

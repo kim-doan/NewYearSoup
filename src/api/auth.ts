@@ -41,9 +41,21 @@ const request = {
             userId: user.userId
         }
     }).then(responseBody),
+    //전체 회원 ID 불러오기
+    getAllUserId: () => axios.post(endpoint, {
+        query:
+            `
+         query findAllUserId {
+            USER {
+                USER_ID
+            }
+         }
+        `
+    }).then(responseBody),
 }
 
 export const Auth = {
     setUser: (user: User): Promise<User> => request.setUser(user),
-    isSignUp: (user: User): Promise<Number> => request.isSignUp(user)
+    isSignUp: (user: User): Promise<Number> => request.isSignUp(user),
+    getAllUserId: (): Promise<User> => request.getAllUserId(),
 }

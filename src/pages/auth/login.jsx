@@ -6,7 +6,9 @@ import { userAction } from "./slice";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import * as style from './login.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
-import { navigate } from "gatsby";
+import { graphql, navigate, useStaticQuery } from "gatsby";
+import { StaticImage } from "gatsby-plugin-image";
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -62,6 +64,14 @@ const LoginPage = () => {
         <Layout pageTitle="로그인">
             <section className={style.login}>
                 <div className={style.loginContainer}>
+                    <div className={style.authLogo}>
+                        <StaticImage
+                            src="../../../assets/img/authLogo.png"
+                            alt="authLogo"
+                            layout="constrained"
+                            width={200}
+                        />
+                    </div>
                     <label>이메일</label>
                     <input
                         type="text"
@@ -81,7 +91,7 @@ const LoginPage = () => {
                     <p className={style.errorMsg}>{passwordError}</p>
                     <div className={style.btnContainer}>
                         <button onClick={handleLogin} onKeyPress={onKeyPress}>떡국 만들러가기</button>
-                        <button className={style.outlineButton} onClick={()=>{navigate("/auth/register")}}>회원가입 하러가기</button>
+                        <button className={style.outlineButton} onClick={() => { navigate("/auth/register") }}>회원가입 하러가기</button>
                         <p>다른 서비스 계정으로 로그인</p>
                         <button className={style.outlineButton} onClick={handleLogin}><FaGoogle /> 구글 계정으로 로그인</button>
                         <button className={style.outlineButton} onClick={handleLogin}><FaFacebook /> 페이스북 계정으로 로그인</button>
