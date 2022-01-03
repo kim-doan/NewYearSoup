@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { userAction, userSelector } from './slice'
 import { Auth } from '../../api/auth'
+import { navigate } from 'gatsby'
 
 export function* setUser() {
     const { setUserSuccess, setUserFail } = userAction
@@ -43,26 +44,40 @@ export function* isSignUp() {
     }
 }
 
-export function* getAllUserId() {
-    const { getAllUserIdSuccess, getAllUserIdFail } = userAction
+export function* getUser() {
+    const { getUserSuccess, getUserFail } = userAction
 
     try {
-        const result = yield call(Auth.getAllUserId);
+        const profile = yield select(userSelector.profile)
+        const result = yield call(Auth.getUser, profile);
 
-        yield put(
-            getAllUserIdSuccess({
-                userIdArr: result.data.USER
-            })
-        );
+        if (result.data.USER.length > 0) {
+            yield put(
+                getUserSuccess({
+                    searchUserInfo: result.data.USER[0],
+                    isSearchUser : true
+                })
+            );
+        } else {
+            yield put(
+                getUserSuccess({
+                    searchUserInfo: {},
+                    isSearchUser : false
+                })
+            );
+                
+            // navigate("404.js")
+        }
     } catch (err) {
-        yield put(getAllUserIdFail(err));
+        yield put(getUserFail(err));
+        console.log(err);
     }
 }
 
 export function* watchUser() {
-    const { setUserLoad, isSignUpLoad, getAllUserIdLoad } = userAction
+    const { setUserLoad, isSignUpLoad, getUserLoad } = userAction
 
     yield takeLatest(setUserLoad, setUser)
     yield takeLatest(isSignUpLoad, isSignUp)
-    yield takeLatest(getAllUserIdLoad, getAllUserId)
+    yield takeLatest(getUserLoad, getUser)
 }

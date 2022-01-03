@@ -42,20 +42,25 @@ const request = {
         }
     }).then(responseBody),
     //전체 회원 ID 불러오기
-    getAllUserId: () => axios.post(endpoint, {
+    getUser: (user: User) => axios.post(endpoint, {
         query:
-            `
-         query findAllUserId {
-            USER {
-                USER_ID
-            }
-         }
         `
+            query findByUserId($userId: String!) {
+                USER(where: {USER_ID: {_eq: $userId}}) {
+                    USER_EMAIL
+                    USER_ID
+                    USER_NAME
+                }
+            }
+        `,
+        variables: {
+            userId: user.userId
+        }
     }).then(responseBody),
 }
 
 export const Auth = {
     setUser: (user: User): Promise<User> => request.setUser(user),
     isSignUp: (user: User): Promise<Number> => request.isSignUp(user),
-    getAllUserId: (): Promise<User> => request.getAllUserId(),
+    getUser: (user: User): Promise<User> => request.getUser(user),
 }

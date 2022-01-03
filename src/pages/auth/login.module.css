@@ -39,7 +39,7 @@ button {
 }
 
 .login .loginContainer {
-  padding: 30px 60px 30px 60px;
+  padding: 60px 60px 60px 60px;
   width: 100%;
   min-height: 600px;
   display: flex;
@@ -47,7 +47,7 @@ button {
   justify-content: center;
   background: #f5f2ed;
   background-image: url("../../../assets/img/authBg.png");
-  background-repeat: no-repeat;
+  background-repeat: round;
   background-size: cover;
 }
 

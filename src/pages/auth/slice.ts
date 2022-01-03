@@ -2,12 +2,13 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 export const initialState = {
     success: false,
     isLoading: false,
-    isSignUp: false,
+    isSignUp: null,
     msg: "",
     error: "",
     profile: null,
     authUser: null,
-    userIdArr: [],
+    searchUserInfo: {},
+    isSearchUser: false,
 }
 
 const reducers = {
@@ -59,18 +60,24 @@ const reducers = {
         state.success = false;
         state.error = error;
     },
-    getAllUserIdLoad: (state, payload) => {
-        state.isLoading = false;
-        state.success = false;
-    },
-    getAllUserIdSuccess: (state, { payload: { userIdArr } }) => {
+    getUserLoad: (state, { payload: { uid } }) => {
         state.isLoading = true;
-        state.success = true;
-        state.userIdArr = userIdArr;
+        state.success = false;
+        state.isSearchUser = false;
+        state.profile = {
+            "userId": uid
+        }
     },
-    getAllUserIdFail: (state, { payload: { payload: error } }) => {
+    getUserSuccess: (state, { payload: { searchUserInfo, isSearchUser } }) => {
+        state.isLoading = false;
+        state.success = true;
+        state.isSearchUser = isSearchUser;
+        state.searchUserInfo = searchUserInfo;
+    },
+    getUserFail: (state, { payload: { payload: error } }) => {
         state.isLoading = false;
         state.success = false;
+        state.isSearchUser = false;
         state.error = error;
     }
 }
@@ -118,9 +125,14 @@ const selectAuthUserState = createSelector(
     (authUser) => authUser
 )
 
-const selectUserIdArrState = createSelector(
-    (state) => state.userIdArr,
-    (userIdArr) => userIdArr
+const selectSearchUserInfoState = createSelector(
+    (state) => state.searchUserInfo,
+    (searchUserInfo) => searchUserInfo
+)
+
+const selectIsSearchUserState = createSelector(
+    (state) => state.isSearchUser,
+    (isSearchUser) => isSearchUser
 )
 
 export const userSelector = {
@@ -131,7 +143,8 @@ export const userSelector = {
     msg: (state) => selectMsgState(state[USER]),
     profile: (state) => selectProfileState(state[USER]),
     authUser: (state) => selectAuthUserState(state[USER]),
-    userIdArr: (state) => selectUserIdArrState(state[USER]),
+    searchUserInfo: (state) => selectSearchUserInfoState(state[USER]),
+    isSearchUser: (state) => selectIsSearchUserState(state[USER]),
 }
 
 export const USER = slice.name
