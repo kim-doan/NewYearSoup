@@ -15,7 +15,6 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
     const clearInputs = () => {
         setEmail('');
         setPassword('');
@@ -69,7 +68,7 @@ const LoginPage = () => {
                             src="../../../assets/img/authLogo.png"
                             alt="authLogo"
                             layout="constrained"
-                            width={200}
+                            width={150}
                         />
                     </div>
                     <label>이메일</label>

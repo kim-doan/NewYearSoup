@@ -1,0 +1,30 @@
+.contentsContainer {
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  background: #f5f2ed;
+  /* background-image: url(../../../assets/img/authBg.png); */
+  background-repeat: round;
+  background-size: cover;
+}
+
+.titleContainer {
+  width: 100%;
+  height: 20%;
+  background-image: url("../../../assets/img/tableTitleBg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.titleContainer label {
+  text-align: start;
+  padding-left: 40px;
+  padding-right: 40px;
+  font-size: 30px;
+  font-family: "Jua";
+  color: #695157;
+}

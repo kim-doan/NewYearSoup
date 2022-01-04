@@ -11,12 +11,14 @@ const NotFoundPage = (props) => {
 
     return (
         <>
-            <div className={style.textContainer}>
-                <label>"<GiTable className={style.icon} />" 비어있는 밥상입니다. ㅠㅠ</label>
+            <div className={style.mainContainer}>
+                <div className={style.textContainer}>
+                    <label className={style.notFoundLabel}>"<GiTable className={style.icon} />" 비어있는 밥상입니다. ㅠㅠ</label>
+                </div>
+                <button className="defaultBtn">내 밥상 보러가기</button>
             </div>
-            <button className="defaultBtn">내 밥상 보러가기</button>
         </>
-    )
+    );
 }
 
 export default NotFoundPage

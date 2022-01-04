@@ -25,7 +25,8 @@ module.exports = {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
         fonts: [
-          `Noto+Serif+KR\:100,300,400,500,700,900`
+          `Noto+Serif+KR\:100,300,400,500,700,900`,
+          'Jua\:100,300,400,500,700,900'
         ],
         display: "swap",
       },
