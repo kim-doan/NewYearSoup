@@ -11,13 +11,57 @@
 
 .titleContainer {
   width: 100%;
-  height: 20%;
+  height: 130px;
   background-image: url("../../../assets/img/tableTitleBg.png");
   background-repeat: no-repeat;
   background-size: cover;
   justify-content: center;
   display: flex;
   flex-direction: column;
+}
+
+.soupTableContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.soupTableBox {
+  height: 1000px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url("../../../assets/img/background.png");
+  background-repeat: no-repeat;
+  background-color: #d0b59c;
+  /* background-size: cover; */
+  background-position-x: 50%;
+}
+
+.soupTable {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: auto;
+}
+
+.soupPostion01 {
+  top: -12%;
+  position: absolute;
+}
+.soupPostion02 {
+  bottom: 33%;
+  position: absolute;
+}
+.soupPostion03 {
+  /* top: -10%; */
+  top: 10%;
+  left: 10%;
+  position: absolute;
+}
+.soupPostion04 {
+  top: 10%;
+  right: 10%;
+  position: absolute;
 }
 
 .titleContainer label {
