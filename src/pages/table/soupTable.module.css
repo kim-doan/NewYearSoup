@@ -20,6 +20,10 @@
   flex-direction: column;
 }
 
+.slick-next {
+    right: 15px;
+}
+
 .soupTableContainer {
   width: 100%;
   height: 100%;
@@ -38,14 +42,15 @@
 }
 
 .soupTable {
-  display: flex;
+  display: flex !important;
   justify-content: center;
   position: relative;
   margin: auto;
+  max-width: 400px;
 }
 
 .soupPostion01 {
-  top: -12%;
+  top: -9%;
   position: absolute;
 }
 .soupPostion02 {
