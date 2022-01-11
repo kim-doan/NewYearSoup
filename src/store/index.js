@@ -3,9 +3,11 @@ import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects'
 import { watchUser } from '../pages/auth/saga'
 import { USER, userReducer } from '../pages/auth/slice'
+import { SOUP, soupReducer } from '../pages/table/slice'
 
 export const rootReducer = combineReducers({
-    [USER] : userReducer
+    [USER]: userReducer,
+    [SOUP]: soupReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()

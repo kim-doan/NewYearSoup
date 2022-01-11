@@ -47,7 +47,7 @@ const reducers = {
     },
     isSignUpSuccess: (state, { payload: { count } }) => {
         state.isLoading = false;
-        state.success = false;
+        state.success = true;
 
         if (count > 0) {
             state.isSignUp = true;

@@ -21,7 +21,16 @@ const SoupTablePage = (props) => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
     };
+
+    const slickNext = (test) => {
+        console.log(test)
+    }
+    const test = () => {
+        console.log("test")
+    }
 
     useEffect(() => {
         console.log(props.params.soupTable)
@@ -52,14 +61,14 @@ const SoupTablePage = (props) => {
                                         <label>떡국 1그릇이 배달됐어요!!</label>
                                     </div>
                                     <div className={style.soupTableBox}>
-                                        <Slider {...settings}>
+                                        <Slider {...settings} afterChange={slickNext}>
                                             <div className={style.soupTable}>
                                                 <StaticImage
                                                     src="../../../assets/img/table.png"
                                                     alt="table"
                                                     layout="fixed"
                                                     width={350}
-                                                />
+                                                /> 
                                                 <div className={style.soupPostion01}>
                                                     <StaticImage
                                                         src="../../../assets/icon/soup01.png"
@@ -135,14 +144,6 @@ const SoupTablePage = (props) => {
                                             </div>
                                         </Slider>
                                     </div>
-                                    {/* <div className={style.soupTableBox}>
-                                            <StaticImage
-                                                src="../../../assets/icon/soup01.png"
-                                                alt="soup01"
-                                                layout="constrained"
-                                                width={150}
-                                            />
-                                    </div> */}
                                 </div>
                             </div>
                         </>
@@ -152,5 +153,29 @@ const SoupTablePage = (props) => {
         </Layout>
     );
 }
+
+const NextArrow = (props) => {
+    const { className, style, onClick } = props;
+    
+  return (
+    <div
+      className={className}
+      style={{ ...style, right: "50px", top: "130px" }}
+      onClick={onClick}
+    />
+  );
+}
+
+const PrevArrow = (props) => {
+    const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, left: "10px", zIndex: 1 }}
+      onClick={onClick}
+    />
+  );
+}
+
 
 export default SoupTablePage

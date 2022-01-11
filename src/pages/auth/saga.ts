@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { userAction, userSelector } from './slice'
-import { Auth } from '../../api/auth'
+import { AuthAPI } from '../../api/auth'
 import { navigate } from 'gatsby'
 
 export function* setUser() {
@@ -9,7 +9,7 @@ export function* setUser() {
     try {
         const profile = yield select(userSelector.profile)
 
-        const result = yield call(Auth.setUser, profile)
+        const result = yield call(AuthAPI.setUser, profile)
 
         yield put(setUserSuccess(result));
     } catch (err) {
@@ -22,7 +22,7 @@ export function* isSignUp() {
 
     try {
         const profile = yield select(userSelector.profile)
-        const result = yield call(Auth.isSignUp, profile)
+        const result = yield call(AuthAPI.isSignUp, profile)
 
         var count = result.data.USER_aggregate.aggregate.count;
 
@@ -49,7 +49,7 @@ export function* getUser() {
 
     try {
         const profile = yield select(userSelector.profile)
-        const result = yield call(Auth.getUser, profile);
+        const result = yield call(AuthAPI.getUser, profile);
 
         if (result.data.USER.length > 0) {
             yield put(

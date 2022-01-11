@@ -8,6 +8,17 @@ body {
   font-family: "Noto Serif KR";
 }
 
+.slick-prev:before,
+.slick-next:before {
+  font-family: "slick";
+  font-size: 60px !important;
+  line-height: 1;
+  opacity: 0.75;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .defaultBtn {
   border: none;
   outline: none;

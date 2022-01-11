@@ -13,7 +13,7 @@ const request = {
     setUser: (user: User) => axios.post(endpoint, {
         query:
             `
-        mutation MyMutation($userId: String!, $userName: String!, $userEmail: String!) {
+        mutation addUser($userId: String!, $userName: String!, $userEmail: String!) {
             insert_USER(objects: {USER_EMAIL: $userEmail, USER_ID: $userId, USER_NAME: $userName}) {
             affected_rows
             }
@@ -59,7 +59,7 @@ const request = {
     }).then(responseBody),
 }
 
-export const Auth = {
+export const AuthAPI = {
     setUser: (user: User): Promise<User> => request.setUser(user),
     isSignUp: (user: User): Promise<Number> => request.isSignUp(user),
     getUser: (user: User): Promise<User> => request.getUser(user),
