@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects'
 import { watchUser } from '../pages/auth/saga'
 import { USER, userReducer } from '../pages/auth/slice'
+import { watchSoup } from '../pages/table/saga'
 import { SOUP, soupReducer } from '../pages/table/slice'
 
 export const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const sagaMiddleware = createSagaMiddleware()
 
 export function* rootSaga() {
     yield all([
-        watchUser()
+        watchUser(),
+        watchSoup(),
     ])
 }
 

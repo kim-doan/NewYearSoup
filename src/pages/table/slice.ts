@@ -8,7 +8,7 @@ export const initialState = {
     msg: "",
     error: "",
     soupList: [],
-    searchUserInfo: {},
+    ownerInfo: {},
     pageable: {
         page: 0,
         size: 4,
@@ -21,14 +21,14 @@ const reducers = {
         state.success = false;
         state.pageable = {
             ...state.pageable,
-            page : page
+            page: page
         }
-        state.searchUserInfo = {
-            ...state.searchUserInfo,
-            userId : userId
+        state.ownerInfo = {
+            ...state.ownerInfo,
+            userId: userId
         }
     },
-    getSoupSuccess: (state, { payload: { soupList }}) => {
+    getSoupSuccess: (state, { payload: { soupList } }) => {
         state.isLoading = false;
         state.success = false;
         state.soupList = [...soupList, soupList];
@@ -64,9 +64,9 @@ const selectMsgState = createSelector(
     (state) => state.msg,
     (msg) => msg
 )
-const selectSearchUserInfoState = createSelector(
-    (state) => state.searchUserInfo,
-    (searchUserInfo) => searchUserInfo
+const selectOwnerInfoState = createSelector(
+    (state) => state.ownerInfo,
+    (ownerInfo) => ownerInfo
 )
 const selectPageableState = createSelector(
     (state) => state.pageable,
@@ -82,10 +82,10 @@ export const soupSelector = {
     isLoading: (state) => selectLoadingState(state[SOUP]),
     error: (state) => selectErrorState(state[SOUP]),
     msg: (state) => selectMsgState(state[SOUP]),
-    searchUserInfo: (state) => selectSearchUserInfoState(state[SOUP]),
+    ownerInfo: (state) => selectOwnerInfoState(state[SOUP]),
     soupList: (state) => selectSoupListState(state[SOUP]),
     pageable: (state) => selectPageableState(state[SOUP]),
-} 
+}
 
 export const SOUP = slice.name
 export const soupReducer = slice.reducer

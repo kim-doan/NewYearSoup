@@ -8,12 +8,14 @@ import * as style from "./soupTable.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { soupAction, soupSelector } from "./slice";
 
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
     const isSearchUser = useSelector(userSelector.isSearchUser);
     const isLoading = useSelector(userSelector.isLoading);
     const searchUserInfo = useSelector(userSelector.searchUserInfo);
+    const soupList = useSelector(soupSelector.soupList);
 
     const settings = {
         dots: true,
@@ -25,8 +27,13 @@ const SoupTablePage = (props) => {
         prevArrow: <PrevArrow />,
     };
 
+    useEffect(() => {
+        console.log(soupList)
+    }, [soupList])
+
     const slickNext = (test) => {
         console.log(test)
+        dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: test }))
     }
     const test = () => {
         console.log("test")
@@ -52,7 +59,7 @@ const SoupTablePage = (props) => {
         <Layout>
             <section className="defaultPanel">
                 {isLoading ? <div className="loader"></div> :
-                    !isSearchUser ?
+                    isSearchUser ?
                         <>
                             <div className={style.contentsContainer}>
                                 <div className={style.soupTableContainer}>
@@ -68,7 +75,7 @@ const SoupTablePage = (props) => {
                                                     alt="table"
                                                     layout="fixed"
                                                     width={350}
-                                                /> 
+                                                />
                                                 <div className={style.soupPostion01}>
                                                     <StaticImage
                                                         src="../../../assets/icon/soup01.png"
@@ -156,25 +163,25 @@ const SoupTablePage = (props) => {
 
 const NextArrow = (props) => {
     const { className, style, onClick } = props;
-    
-  return (
-    <div
-      className={className}
-      style={{ ...style, right: "50px", top: "130px" }}
-      onClick={onClick}
-    />
-  );
+
+    return (
+        <div
+            className={className}
+            style={{ ...style, right: "50px", top: "130px" }}
+            onClick={onClick}
+        />
+    );
 }
 
 const PrevArrow = (props) => {
     const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, left: "10px", zIndex: 1 }}
-      onClick={onClick}
-    />
-  );
+    return (
+        <div
+            className={className}
+            style={{ ...style, left: "10px", zIndex: 1 }}
+            onClick={onClick}
+        />
+    );
 }
 
 

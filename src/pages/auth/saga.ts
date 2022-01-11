@@ -1,7 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { userAction, userSelector } from './slice'
 import { AuthAPI } from '../../api/auth'
-import { navigate } from 'gatsby'
 
 export function* setUser() {
     const { setUserSuccess, setUserFail } = userAction
@@ -55,22 +54,21 @@ export function* getUser() {
             yield put(
                 getUserSuccess({
                     searchUserInfo: result.data.USER[0],
-                    isSearchUser : true
+                    isSearchUser: true
                 })
             );
         } else {
             yield put(
                 getUserSuccess({
                     searchUserInfo: {},
-                    isSearchUser : false
+                    isSearchUser: false
                 })
             );
-                
+
             // navigate("404.js")
         }
     } catch (err) {
         yield put(getUserFail(err));
-        console.log(err);
     }
 }
 
