@@ -9,6 +9,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { soupAction, soupSelector } from "./slice";
+import { graphql, useStaticQuery } from "gatsby";
+import soup01 from "../../../assets/icon/soup01.png";
+import soup02 from "../../../assets/icon/soup02.png"
 
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
@@ -52,6 +55,34 @@ const SoupTablePage = (props) => {
         console.log(searchUserInfo);
     }, [searchUserInfo])
 
+    const data = useStaticQuery(graphql`
+    query {
+        file(base: { eq: "soup02.png" }) {
+            childImageSharp {
+                gatsbyImageData(
+                    width: 100
+                    formats: [AUTO, WEBP, AVIF]
+                )
+            }
+        }
+    }
+    `);
+
+    useEffect(() => {
+        console.log(data)
+    }, [data])
+
+    // const matchImageData = (soupImgId) => {
+    //     switch (soupImgId) {
+    //         case "soup01":
+    //             return getImage(data.file)
+    //         case "soup02":
+    //             return getImage(data2.file)
+    //         default:
+    //             return getImage(data2.file)
+    //     }
+    // }
+
     return (
         <Layout>
             <section className="defaultPanel">
@@ -75,12 +106,19 @@ const SoupTablePage = (props) => {
                                                         width={350}
                                                     />
                                                     <div className={style.soupPostion01}>
-                                                        <StaticImage 
-                                                            src={"../../../assets/icon/" + soupList[0][0]["SOUP_IMG_ID"] + ".png"}
+                                                        {/* <GatsbyImage
+                                                            image={data2.file}
+                                                            alt="test"
+                                                            layout="constrained"
+                                                            width={100}
+                                                        /> */}
+                                                        {/* <StaticImage
+                                                            src={"/" + soupList[0][0]["SOUP_IMG_ID"] + ".png"}
                                                             alt="soup01"
                                                             layout="constrained"
                                                             width={100}
-                                                        />
+                                                        /> */}
+                                                        <img src={"/" + soupList[pageable.page][0]["SOUP_IMG_ID"] + ".png"} width={100} />
                                                     </div>
                                                     <div className={style.soupPostion02}>
                                                         <StaticImage

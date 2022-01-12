@@ -1,4 +1,4 @@
 export interface Pageable {
-    size: Number,
-    page : Number
+    size: number,
+    page: number
 }

@@ -1,8 +1,8 @@
 import { User } from "./User";
 
 export interface Soup {
-    soupNo: Number,
-    soupImgId: String,
+    soupNo: number,
+    soupImgId: string,
     createTime: Date,
     owner: User,
     sender: User
