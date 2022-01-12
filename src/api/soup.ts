@@ -21,14 +21,19 @@ const request = {
                     SOUP_IMG_ID
                     CREATE_TIME
                     OWNER {
-                    USER_NO
-                    USER_ID
-                    USER_NAME
+                        USER_NO
+                        USER_ID
+                        USER_NAME
                     }
                     SENDER {
-                    USER_NO
-                    USER_ID
-                    USER_NAME
+                        USER_NO
+                        USER_ID
+                        USER_NAME
+                    }
+                }
+                SOUP_aggregate(where: {USER_ID: {_eq: $userId}}) {
+                    aggregate {
+                        count
                     }
                 }
             }

@@ -1,4 +1,4 @@
-import { StaticImage } from "gatsby-plugin-image";
+import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/layout";
@@ -16,6 +16,8 @@ const SoupTablePage = (props) => {
     const isLoading = useSelector(userSelector.isLoading);
     const searchUserInfo = useSelector(userSelector.searchUserInfo);
     const soupList = useSelector(soupSelector.soupList);
+    const totalCount = useSelector(soupSelector.totalCount);
+    const pageable = useSelector(soupSelector.pageable);
 
     const settings = {
         dots: true,
@@ -29,6 +31,7 @@ const SoupTablePage = (props) => {
 
     useEffect(() => {
         console.log(soupList)
+        console.log(soupList[0])
     }, [soupList])
 
     const slickNext = (test) => {
@@ -42,18 +45,12 @@ const SoupTablePage = (props) => {
     useEffect(() => {
         console.log(props.params.soupTable)
         dispatch(userAction.getUserLoad({ uid: props.params.soupTable }));
+        dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: 0 }))
     }, [])
 
     useEffect(() => {
         console.log(searchUserInfo);
     }, [searchUserInfo])
-    // useEffect(() => {
-    //     if (isSignUp) {
-
-    //     } else {
-    //         navigate("404.js")
-    //     }
-    // }, [isSignUp])
 
     return (
         <Layout>
@@ -69,86 +66,48 @@ const SoupTablePage = (props) => {
                                     </div>
                                     <div className={style.soupTableBox}>
                                         <Slider {...settings} afterChange={slickNext}>
-                                            <div className={style.soupTable}>
-                                                <StaticImage
-                                                    src="../../../assets/img/table.png"
-                                                    alt="table"
-                                                    layout="fixed"
-                                                    width={350}
-                                                />
-                                                <div className={style.soupPostion01}>
+                                            {[...Array(totalCount)].map((e, i) => {
+                                                return <div className={style.soupTable}>
                                                     <StaticImage
-                                                        src="../../../assets/icon/soup01.png"
-                                                        alt="soup01"
-                                                        layout="constrained"
-                                                        width={100}
+                                                        src="../../../assets/img/table.png"
+                                                        alt="table"
+                                                        layout="fixed"
+                                                        width={350}
                                                     />
+                                                    <div className={style.soupPostion01}>
+                                                        <StaticImage 
+                                                            src={"../../../assets/icon/" + soupList[0][0]["SOUP_IMG_ID"] + ".png"}
+                                                            alt="soup01"
+                                                            layout="constrained"
+                                                            width={100}
+                                                        />
+                                                    </div>
+                                                    <div className={style.soupPostion02}>
+                                                        <StaticImage
+                                                            src="../../../assets/icon/soup02.png"
+                                                            alt="soup02"
+                                                            layout="constrained"
+                                                            width={100}
+                                                        />
+                                                    </div>
+                                                    <div className={style.soupPostion03}>
+                                                        <StaticImage
+                                                            src="../../../assets/icon/soup01.png"
+                                                            alt="soup03"
+                                                            layout="constrained"
+                                                            width={100}
+                                                        />
+                                                    </div>
+                                                    <div className={style.soupPostion04}>
+                                                        <StaticImage
+                                                            src="../../../assets/icon/soup02.png"
+                                                            alt="soup04"
+                                                            layout="constrained"
+                                                            width={100}
+                                                        />
+                                                    </div>
                                                 </div>
-                                                <div className={style.soupPostion02}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup02.png"
-                                                        alt="soup02"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                                <div className={style.soupPostion03}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup01.png"
-                                                        alt="soup03"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                                <div className={style.soupPostion04}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup02.png"
-                                                        alt="soup04"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className={style.soupTable}>
-                                                <StaticImage
-                                                    src="../../../assets/img/table.png"
-                                                    alt="table"
-                                                    layout="fixed"
-                                                    width={350}
-                                                />
-                                                <div className={style.soupPostion01}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup01.png"
-                                                        alt="soup01"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                                <div className={style.soupPostion02}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup02.png"
-                                                        alt="soup02"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                                <div className={style.soupPostion03}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup01.png"
-                                                        alt="soup03"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                                <div className={style.soupPostion04}>
-                                                    <StaticImage
-                                                        src="../../../assets/icon/soup02.png"
-                                                        alt="soup04"
-                                                        layout="constrained"
-                                                        width={100}
-                                                    />
-                                                </div>
-                                            </div>
+                                            })}
                                         </Slider>
                                     </div>
                                 </div>

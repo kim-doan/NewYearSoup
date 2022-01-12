@@ -12,9 +12,12 @@ export function* getSoup() {
         const result = yield call(SoupAPI.getSoup, ownerInfo, pageable);
 
         if (result.data.SOUP.length > 0) {
+            var totalCount = result.data.SOUP_aggregate.aggregate.count;
+
             yield put(
                 getSoupSuccess({
-                    soupList: result.data.SOUP
+                    soupList: result.data.SOUP,
+                    totalCount: totalCount 
                 })
             )
         }

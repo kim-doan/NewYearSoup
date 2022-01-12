@@ -55,7 +55,7 @@ const reducers = {
             state.isSignUp = false;
         }
     },
-    isSignUpFail: (state, { payload: { payload: error } }) => {
+    isSignUpFail: (state, { payload: error }) => {
         state.isLoading = false;
         state.success = false;
         state.error = error;
@@ -74,7 +74,7 @@ const reducers = {
         state.isSearchUser = isSearchUser;
         state.searchUserInfo = searchUserInfo;
     },
-    getUserFail: (state, { payload: { payload: error } }) => {
+    getUserFail: (state, { payload: error }) => {
         state.isLoading = false;
         state.success = false;
         state.isSearchUser = false;
