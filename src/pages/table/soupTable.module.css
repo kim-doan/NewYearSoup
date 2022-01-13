@@ -21,7 +21,7 @@
 }
 
 .slick-next {
-    right: 15px;
+  right: 15px;
 }
 
 .soupTableContainer {
@@ -30,7 +30,7 @@
 }
 
 .soupTableBox {
-  height: 1000px;
+  height: 770px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,21 +50,21 @@
 }
 
 .soupPostion01 {
-  top: -9%;
+  top: -6%;
   position: absolute;
 }
 .soupPostion02 {
-  bottom: 33%;
+  bottom: 30%;
   position: absolute;
 }
 .soupPostion03 {
   /* top: -10%; */
-  top: 10%;
+  top: 13%;
   left: 10%;
   position: absolute;
 }
 .soupPostion04 {
-  top: 10%;
+  top: 13%;
   right: 10%;
   position: absolute;
 }

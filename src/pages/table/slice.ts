@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Pageable } from '../../types/Pageable';
 import { User } from '../../types/User';
+import * as _ from 'lodash'
 
 export const initialState = {
     success: false,
@@ -28,12 +29,16 @@ const reducers = {
             ...state.ownerInfo,
             userId: userId
         }
+
+        if (state.soupList[page] === undefined) {
+            state.soupList[page] = [];
+        }
     },
     getSoupSuccess: (state, { payload: { soupList, totalCount } }) => {
         state.isLoading = false;
         state.success = false;
-        state.soupList[state.pageable.page] = soupList;
         state.totalCount = totalCount;
+        state.soupList[state.pageable.page] = soupList;
     },
     getSoupFail: (state, { payload: { payload: error } }) => {
         state.isLoading = false;

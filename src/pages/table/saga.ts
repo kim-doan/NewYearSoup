@@ -8,18 +8,21 @@ export function* getSoup() {
     try {
         const ownerInfo = yield select(soupSelector.ownerInfo);
         const pageable = yield select(soupSelector.pageable);
+        const soupList = yield select(soupSelector.soupList);
 
-        const result = yield call(SoupAPI.getSoup, ownerInfo, pageable);
+        if (soupList[pageable.page].length <= 0) {
+            const result = yield call(SoupAPI.getSoup, ownerInfo, pageable);
 
-        if (result.data.SOUP.length > 0) {
-            var totalCount = result.data.SOUP_aggregate.aggregate.count;
+            if (result.data.SOUP.length > 0) {
+                var totalCount = result.data.SOUP_aggregate.aggregate.count;
 
-            yield put(
-                getSoupSuccess({
-                    soupList: result.data.SOUP,
-                    totalCount: totalCount 
-                })
-            )
+                yield put(
+                    getSoupSuccess({
+                        soupList: result.data.SOUP,
+                        totalCount: totalCount
+                    })
+                )
+            }
         }
     } catch (err) {
         yield put(getSoupFail(err));

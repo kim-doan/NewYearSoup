@@ -21,6 +21,7 @@ const SoupTablePage = (props) => {
     const soupList = useSelector(soupSelector.soupList);
     const totalCount = useSelector(soupSelector.totalCount);
     const pageable = useSelector(soupSelector.pageable);
+    const [totalPage, setTotalPage] = useState(0);
 
     const settings = {
         dots: true,
@@ -37,16 +38,10 @@ const SoupTablePage = (props) => {
         console.log(soupList[0])
     }, [soupList])
 
-    const slickNext = (test) => {
-        console.log(test)
-        dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: test }))
+    const afterChange = (page) => {
+        dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: page }))
     }
-    const test = () => {
-        console.log("test")
-    }
-
     useEffect(() => {
-        console.log(props.params.soupTable)
         dispatch(userAction.getUserLoad({ uid: props.params.soupTable }));
         dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: 0 }))
     }, [])
@@ -55,33 +50,9 @@ const SoupTablePage = (props) => {
         console.log(searchUserInfo);
     }, [searchUserInfo])
 
-    const data = useStaticQuery(graphql`
-    query {
-        file(base: { eq: "soup02.png" }) {
-            childImageSharp {
-                gatsbyImageData(
-                    width: 100
-                    formats: [AUTO, WEBP, AVIF]
-                )
-            }
-        }
-    }
-    `);
-
     useEffect(() => {
-        console.log(data)
-    }, [data])
-
-    // const matchImageData = (soupImgId) => {
-    //     switch (soupImgId) {
-    //         case "soup01":
-    //             return getImage(data.file)
-    //         case "soup02":
-    //             return getImage(data2.file)
-    //         default:
-    //             return getImage(data2.file)
-    //     }
-    // }
+        setTotalPage(Math.ceil(totalCount / pageable.size));
+    }, [totalCount])
 
     return (
         <Layout>
@@ -93,56 +64,60 @@ const SoupTablePage = (props) => {
                                 <div className={style.soupTableContainer}>
                                     <div className={style.titleContainer}>
                                         <label>{searchUserInfo.USER_NAME}님에게</label>
-                                        <label>떡국 1그릇이 배달됐어요!!</label>
+                                        <label>떡국 {totalCount}그릇이 배달됐어요!!</label>
                                     </div>
                                     <div className={style.soupTableBox}>
-                                        <Slider {...settings} afterChange={slickNext}>
-                                            {[...Array(totalCount)].map((e, i) => {
+                                        <Slider {...settings} afterChange={afterChange}>
+                                            {totalCount <= 0 ?
+                                                <div className={style.soupTable}>
+                                                    <img src={"/table.png"} width={350} />
+                                                    {/* <StaticImage
+                                                        src="../../../assets/img/table.png"
+                                                        alt="table"
+                                                        loading="eager"
+                                                        layout="fixed"
+                                                        width={350}
+                                                    /> */}
+                                                </div>
+                                            :
+                                            [...Array(totalPage)].map((e, i) => {
                                                 return <div className={style.soupTable}>
-                                                    <StaticImage
+                                                    <img src={"/table.png"} width={350} />
+                                                    {/* <StaticImage
                                                         src="../../../assets/img/table.png"
                                                         alt="table"
                                                         layout="fixed"
+                                                        loading="eager"
                                                         width={350}
-                                                    />
+                                                    /> */}
+                                                    
                                                     <div className={style.soupPostion01}>
-                                                        {/* <GatsbyImage
-                                                            image={data2.file}
-                                                            alt="test"
-                                                            layout="constrained"
-                                                            width={100}
-                                                        /> */}
-                                                        {/* <StaticImage
-                                                            src={"/" + soupList[0][0]["SOUP_IMG_ID"] + ".png"}
-                                                            alt="soup01"
-                                                            layout="constrained"
-                                                            width={100}
-                                                        /> */}
-                                                        <img src={"/" + soupList[pageable.page][0]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                        {soupList[pageable.page].length > 0 ?
+                                                            <img src={"/" + soupList[pageable.page][0]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            :
+                                                            <></>
+                                                        }
                                                     </div>
                                                     <div className={style.soupPostion02}>
-                                                        <StaticImage
-                                                            src="../../../assets/icon/soup02.png"
-                                                            alt="soup02"
-                                                            layout="constrained"
-                                                            width={100}
-                                                        />
+                                                        {soupList[pageable.page].length > 1 ?
+                                                            <img src={"/" + soupList[pageable.page][1]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            :
+                                                            <></>
+                                                        }
                                                     </div>
                                                     <div className={style.soupPostion03}>
-                                                        <StaticImage
-                                                            src="../../../assets/icon/soup01.png"
-                                                            alt="soup03"
-                                                            layout="constrained"
-                                                            width={100}
-                                                        />
+                                                        {soupList[pageable.page].length > 2 ?
+                                                            <img src={"/" + soupList[pageable.page][2]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            :
+                                                            <></>
+                                                        }
                                                     </div>
                                                     <div className={style.soupPostion04}>
-                                                        <StaticImage
-                                                            src="../../../assets/icon/soup02.png"
-                                                            alt="soup04"
-                                                            layout="constrained"
-                                                            width={100}
-                                                        />
+                                                        {soupList[pageable.page].length > 3 ?
+                                                            <img src={"/" + soupList[pageable.page][3]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            :
+                                                            <></>
+                                                        }
                                                     </div>
                                                 </div>
                                             })}
