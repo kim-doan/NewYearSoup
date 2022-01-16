@@ -27,10 +27,11 @@
 .soupTableContainer {
   width: 100%;
   height: 100%;
+  background-color: #d0b59c;
 }
 
 .soupTableBox {
-  height: 770px;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,21 +53,28 @@
 .soupPostion01 {
   top: -6%;
   position: absolute;
+  cursor: pointer;
 }
 .soupPostion02 {
   bottom: 30%;
   position: absolute;
+  cursor: pointer;
 }
 .soupPostion03 {
-  /* top: -10%; */
   top: 13%;
   left: 10%;
   position: absolute;
+  cursor: pointer;
 }
 .soupPostion04 {
   top: 13%;
   right: 10%;
   position: absolute;
+  cursor: pointer;
+}
+
+.btnContainer {
+  margin: 50px 80px 50px 80px;
 }
 
 .titleContainer label {
@@ -76,4 +84,43 @@
   font-size: 30px;
   font-family: "Jua";
   color: #695157;
+}
+
+.hoverButton {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #9c4b3a;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 18px;
+  padding: 15px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.hoverButton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.hoverButton span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.hoverButton:hover span {
+  padding-right: 25px;
+}
+
+.hoverButton:hover span:after {
+  opacity: 1;
+  right: 0;
 }

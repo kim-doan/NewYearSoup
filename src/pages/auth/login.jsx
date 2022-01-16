@@ -28,7 +28,8 @@ const LoginPage = () => {
     const handleLogin = async () => {
         try {
             clearErrors();
-            const user = await signInWithEmailAndPassword(auth, email, password);
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            navigate("/table/" + result.user.uid);
         } catch (err) {
             switch (err.code) {
                 case "auth/invalid-email":

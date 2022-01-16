@@ -1,4 +1,3 @@
-import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/layout";
@@ -9,9 +8,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { soupAction, soupSelector } from "./slice";
-import { graphql, useStaticQuery } from "gatsby";
-import soup01 from "../../../assets/icon/soup01.png";
-import soup02 from "../../../assets/icon/soup02.png"
 
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
@@ -34,30 +30,27 @@ const SoupTablePage = (props) => {
     };
 
     useEffect(() => {
-        console.log(soupList)
-        console.log(soupList[0])
-    }, [soupList])
-
-    const afterChange = (page) => {
-        dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: page }))
-    }
-    useEffect(() => {
         dispatch(userAction.getUserLoad({ uid: props.params.soupTable }));
         dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: 0 }))
     }, [])
 
     useEffect(() => {
-        console.log(searchUserInfo);
-    }, [searchUserInfo])
-
-    useEffect(() => {
         setTotalPage(Math.ceil(totalCount / pageable.size));
     }, [totalCount])
+
+    const afterChange = (page) => {
+        dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: page }))
+    }
+
+    const LinkCopy = () => {
+        navigator.clipboard.writeText(props.location.href);
+        alert("클립보드에 복사되었습니다.")
+    }
 
     return (
         <Layout>
             <section className="defaultPanel">
-                {isLoading ? <div className="loader"></div> :
+                {isLoading || isSearchUser === undefined ? <div className="loader"></div> :
                     isSearchUser ?
                         <>
                             <div className={style.contentsContainer}>
@@ -71,31 +64,16 @@ const SoupTablePage = (props) => {
                                             {totalCount <= 0 ?
                                                 <div className={style.soupTable}>
                                                     <img src={"/table.png"} width={350} />
-                                                    {/* <StaticImage
-                                                        src="../../../assets/img/table.png"
-                                                        alt="table"
-                                                        loading="eager"
-                                                        layout="fixed"
-                                                        width={350}
-                                                    /> */}
                                                 </div>
                                             :
                                             [...Array(totalPage)].map((e, i) => {
-                                                return <div className={style.soupTable}>
+                                                return <div key={i} className={style.soupTable}>
                                                     <img src={"/table.png"} width={350} />
-                                                    {/* <StaticImage
-                                                        src="../../../assets/img/table.png"
-                                                        alt="table"
-                                                        layout="fixed"
-                                                        loading="eager"
-                                                        width={350}
-                                                    /> */}
-                                                    
                                                     <div className={style.soupPostion01}>
                                                         {soupList[pageable.page].length > 0 ?
                                                             <img src={"/" + soupList[pageable.page][0]["SOUP_IMG_ID"] + ".png"} width={100} />
                                                             :
-                                                            <></>
+                                                            <div className="loader-white"></div>
                                                         }
                                                     </div>
                                                     <div className={style.soupPostion02}>
@@ -122,8 +100,12 @@ const SoupTablePage = (props) => {
                                                 </div>
                                             })}
                                         </Slider>
+                                        <div className={style.btnContainer}>
+                                            <button className={style.hoverButton} onClick={LinkCopy}><span>링크 복사하기 </span></button>
+                                            <button className={style.hoverButton}><span>떡국 전해주기 </span></button>
+                                        </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                         </>
                         : <NotFoundPage></NotFoundPage>
@@ -139,7 +121,7 @@ const NextArrow = (props) => {
     return (
         <div
             className={className}
-            style={{ ...style, right: "50px", top: "130px" }}
+            style={{ ...style, right: "50px", top: "140px" }}
             onClick={onClick}
         />
     );
@@ -155,6 +137,5 @@ const PrevArrow = (props) => {
         />
     );
 }
-
 
 export default SoupTablePage

@@ -8,7 +8,7 @@ export const initialState = {
     profile: null,
     authUser: null,
     searchUserInfo: {},
-    isSearchUser: false,
+    isSearchUser: undefined,
 }
 
 const reducers = {
@@ -63,7 +63,7 @@ const reducers = {
     getUserLoad: (state, { payload: { uid } }) => {
         state.isLoading = true;
         state.success = false;
-        state.isSearchUser = false;
+        state.isSearchUser = undefined;
         state.profile = {
             "userId": uid
         }
