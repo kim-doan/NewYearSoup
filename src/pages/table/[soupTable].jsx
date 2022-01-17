@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { soupAction, soupSelector } from "./slice";
+import { navigate } from "gatsby";
 
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
@@ -45,6 +46,10 @@ const SoupTablePage = (props) => {
     const LinkCopy = () => {
         navigator.clipboard.writeText(props.location.href);
         alert("클립보드에 복사되었습니다.")
+    }
+
+    const CreateSoup = () => {
+        navigate("/tray/" + props.params.soupTable)
     }
 
     return (
@@ -102,7 +107,7 @@ const SoupTablePage = (props) => {
                                         </Slider>
                                         <div className={style.btnContainer}>
                                             <button className={style.hoverButton} onClick={LinkCopy}><span>링크 복사하기 </span></button>
-                                            <button className={style.hoverButton}><span>떡국 전해주기 </span></button>
+                                            <button className={style.hoverButton} onClick={CreateSoup}><span>떡국 전해주기 </span></button>
                                         </div>
                                     </div>
                                 </div>                                
