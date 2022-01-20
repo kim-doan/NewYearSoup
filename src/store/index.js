@@ -5,10 +5,12 @@ import { watchUser } from '../pages/auth/saga'
 import { USER, userReducer } from '../pages/auth/slice'
 import { watchSoup } from '../pages/table/saga'
 import { SOUP, soupReducer } from '../pages/table/slice'
+import { TRAY, trayReducer } from '../pages/tray/slice'
 
 export const rootReducer = combineReducers({
     [USER]: userReducer,
     [SOUP]: soupReducer,
+    [TRAY]: trayReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()
