@@ -39,10 +39,20 @@
   position: absolute;
   bottom: 0;
 }
+
 .sideMenuContainer {
   max-width: 940px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.messageContainer {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 20px;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -57,14 +67,16 @@
   flex: 0 1 20%;
 }
 
-.selectContainer {
-  cursor: pointer;
-  height: 80px;
-  margin: 10px 1em;
-  padding-left: 10px;
-  padding-right: 10px;
-  flex: 0 1 20%;
-  border: 1px solid black;
+.scrollContainer {
+  width: 370px;
+  height: 200px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../assets/img/messageBoxBg.png");
+  background-position-x: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 /* 
 .container:nth-child(3n + 1) {
@@ -82,21 +94,34 @@
 @media (max-width: 500px) {
   .container {
     cursor: pointer;
-    height: 40px;
+    height: 50px;
     margin: 10px 1em;
     padding-left: 10px;
     padding-right: 10px;
     flex: 0 1 19%;
   }
-
-  .selectContainer {
+  .madeButton {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #9c4b3a;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    transition: all 0.5s;
     cursor: pointer;
-    height: 40px;
-    margin: 10px 1em;
-    padding-left: 10px;
-    padding-right: 10px;
-    flex: 0 1 19%;
-    border: 1px solid black;
+    margin-top: 15px;
+    flex: 0 1 48%;
+  }
+
+  .tray {
+    display: flex !important;
+    justify-content: center;
+    position: relative;
+    margin: auto;
+    max-width: 400px;
+    margin-top: 200px;
   }
 }
 
@@ -114,7 +139,10 @@ img {
 }
 
 .btnContainer {
-  margin: 0px 80px 0px 80px;
+  margin: 20px 80px 20px 80px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 }
 
 .madeButton {
@@ -129,4 +157,28 @@ img {
   transition: all 0.5s;
   cursor: pointer;
   margin-top: 15px;
+  flex: 0 1 48%;
+}
+
+.inputTransParent {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  background: transparent;
+  padding: 0;
+  border: none;
+  overflow: hidden;
+  font-family: "Jua";
+  font-size: 20px;
+}
+
+.inputTransParent:focus {
+  outline: none;
+}
+
+.inputArea {
+  width: 288px;
+  height: 140px;
+  margin: 0 auto;
+  padding: 0;
 }

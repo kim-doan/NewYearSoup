@@ -5,13 +5,13 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA2zXOBWCH4rFVxOLhjPyS_y3TYfi4WWL0",
-  authDomain: "newyearsoup.firebaseapp.com",
-  projectId: "newyearsoup",
-  storageBucket: "newyearsoup.appspot.com",
-  messagingSenderId: "301675976242",
-  appId: "1:301675976242:web:54f0839a2d78d415e64e2b",
-  measurementId: "G-BBTZTDG874"
+  apiKey: process.env.GATSBY_FIREBASE_APIKEY,
+  authDomain: process.env.GATSBY_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.GATSBY_FIREBASE_PROJECTID,
+  storageBucket: process.env.GATSBY_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.GATSBY_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.GATSBY_FIREBASE_APPID,
+  measurementId: process.env.GATSBY_FIREBASE_MEASUREMENTID
 };
 
 // Initialize Firebase

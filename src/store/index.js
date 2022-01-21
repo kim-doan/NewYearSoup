@@ -18,7 +18,7 @@ const sagaMiddleware = createSagaMiddleware()
 export function* rootSaga() {
     yield all([
         watchUser(),
-        watchSoup(),
+        watchSoup()
     ])
 }
 

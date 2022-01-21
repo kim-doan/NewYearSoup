@@ -44,8 +44,25 @@ const request = {
             page: pageable.page * pageable.size
         }
     }).then(responseBody),
+    addSoup: (soup: Soup) => axios.post(endpoint, {
+        query:
+        `
+            mutation addSoup($userId: String!, $soupImgId: String!, $reqUserId: String!) {
+                insert_SOUP(objects: {USER_ID: $userId, SOUP_IMG_ID: $soupImgId, REQ_USER_ID: $reqUserId}) {
+                    affected_rows
+                }
+            }
+
+        `,
+        variables: {
+            userId: soup.owner,
+            soupImgId: soup.soupImgId,
+            reqUserId: soup.sender,
+        }
+    }).then(responseBody),
 }
 
 export const SoupAPI = {
-    getSoup: (user: User, pageable: Pageable): Promise<Soup> => request.getSoup(user, pageable)
+    getSoup: (user: User, pageable: Pageable): Promise<Soup> => request.getSoup(user, pageable),
+    addSoup: (soup: Soup): Promise<Soup> => request.addSoup(soup),
 }

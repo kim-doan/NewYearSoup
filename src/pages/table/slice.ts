@@ -36,14 +36,27 @@ const reducers = {
     },
     getSoupSuccess: (state, { payload: { soupList, totalCount } }) => {
         state.isLoading = false;
-        state.success = false;
+        state.success = true;
         state.totalCount = totalCount;
         state.soupList[state.pageable.page] = soupList;
     },
-    getSoupFail: (state, { payload: { payload: error } }) => {
+    getSoupFail: (state, { payload: { error } }) => {
         state.isLoading = false;
         state.success = false;
         state.error = error
+    },
+    addSoupLoad: (state) => {
+        state.isLoading = true;
+        state.success = false;
+    },
+    addSoupSuccess: (state) => {
+        state.isLoading = false;
+        state.success = true;
+    },
+    addSoupFail: (state, { payload: { error } }) => {
+        state.isLoading = false;
+        state.success = false;
+        state.error = error;
     }
 }
 

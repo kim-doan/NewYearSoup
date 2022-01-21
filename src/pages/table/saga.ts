@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { soupAction, soupSelector } from './slice'
 import { SoupAPI } from '../../api/soup'
+import { traySelector } from '../tray/slice';
 
 export function* getSoup() {
     const { getSoupSuccess, getSoupFail } = soupAction;
@@ -30,8 +31,21 @@ export function* getSoup() {
     }
 }
 
+export function* addSoup() {
+    const { addSoupSuccess, addSoupFail } = soupAction;
+
+    try {
+        const ownerInfo = yield select(soupSelector.ownerInfo);
+        const message = yield select(traySelector.message);
+    } catch (err) {
+        yield put(addSoupFail(err));
+        console.log(err)
+    }
+}
+
 export function* watchSoup() {
-    const { getSoupLoad } = soupAction
+    const { getSoupLoad, addSoupLoad } = soupAction
 
     yield takeLatest(getSoupLoad, getSoup)
+    yield takeLatest(addSoupLoad, addSoup)
 }

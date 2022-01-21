@@ -2,15 +2,18 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import * as _ from 'lodash'
 
 export const initialState = {
-    bowl: "bowl5",
-    decorations: [
-        "meat",
-        "pepper"
-    ]
+    success: false,
+    isLoading: false,
+    error: "",
+
+    bowl: "bowl1",
+    decorations: [],
+    message: "",
+    soupImgId: "",
 }
 
 const reducers = {
-    setBowl: (state, { payload: { bowl } }) => {
+    setBowl: (state, { payload: bowl }) => {
         state.bowl = bowl;
     },
     setDecoration: (state, { payload: decoration }) => {
@@ -23,6 +26,12 @@ const reducers = {
         } else {
             state.decorations.push(decoration);
         }
+    },
+    setMessage: (state, { payload: message }) => {
+        state.message = message;
+    },
+    setSoupImgId: (state, { payload: soupImgId }) => {
+        state.soupImgId = soupImgId;
     }
 }
 
@@ -38,14 +47,24 @@ const selectBowlState = createSelector(
     (state) => state.bowl,
     (bowl) => bowl
 )
-const selectDecorations = createSelector(
+const selectDecorationsState = createSelector(
     (state) => state.decorations,
     (decorations) => decorations
+)
+const selectMessage = createSelector(
+    (state) => state.message,
+    (message) => message
+)
+const selectSoupImgIdState = createSelector(
+    (state) => state.soupImgId,
+    (soupImgId) => soupImgId
 )
 
 export const traySelector = {
     bowl: (state) => selectBowlState(state[TRAY]),
-    decorations: (state) => selectDecorations(state[TRAY])
+    decorations: (state) => selectDecorationsState(state[TRAY]),
+    message: (state) => selectMessage(state[TRAY]),
+    soupImgId: (state) => selectSoupImgIdState(state[TRAY]),
 }
 
 export const TRAY = slice.name
