@@ -8,7 +8,7 @@ import * as style from './register.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { navigate } from "gatsby";
 
-const RegisterPage = () => {
+const RegisterPage = (props) => {
     const dispatch = useDispatch();
 
     // const [user, setUser] = useState(User);
@@ -41,7 +41,11 @@ const RegisterPage = () => {
     const handleLogin = async () => {
         try {
             clearErrors();
-            const user = await signInWithEmailAndPassword(auth, email, password);
+            const result = await signInWithEmailAndPassword(auth, email, password);
+
+            dispatch(userAction.setAuthUser(result.user));
+
+            navigate("/table/" + result.user.uid);
         } catch (err) {
             switch (err.code) {
                 case "auth/invalid-email":

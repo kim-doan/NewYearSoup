@@ -5,36 +5,36 @@ import * as style from "./createsoup.module.css";
 import html2canvas from 'html2canvas';
 import { trayAction, traySelector } from "./slice";
 import { navigate } from "gatsby";
-import AWS from 'aws-sdk';
-import { Buffer } from 'buffer';
-
+import { storage } from "../../firebase"
+import { v4 as uuidv4 } from "uuid";
+import { soupAction } from "../table/slice";
+import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { userAction, userSelector } from "../auth/slice";
+    
 const CreateSoupPage = (props) => {
     const dispatch = useDispatch();
     const bowl = useSelector(traySelector.bowl);
     const decorations = useSelector(traySelector.decorations);
+    const authUser = useSelector(userSelector.authUser);
+    const isAuthUserLoad = useSelector(userSelector.isAuthUserLoad);
     const [step, setStep] = useState(0);
-     const [progress , setProgress] = useState(0);
+    const [progress, setProgress] = useState(null);
 
-    // const S3Config = {
-    //     bucketName: process.env.GATSBY_AWS_S3_BUCKET_NAME,
-    //     region: process.env.GATSBY_AWS_S3_BUCKET_REGION,
-    //     accessKeyId: process.env.GATSBY_AWS_S3_ACCESS_KEY,
-    //     secretAccessKey: process.env.GATSBY_AWS_S3_SECRET_KEY
-    // }
-    AWS.config.update({
-        accessKeyId: process.env.GATSBY_AWS_S3_ACCESS_KEY,
-        secretAccessKey: process.env.GATSBY_AWS_S3_SECRET_KEY
-    })
-
-    const myBucket = new AWS.S3({
-        params: { Bucket: "new-year-soup" },
-        region: process.env.GATSBY_AWS_S3_BUCKET_REGION
-    })
+    useEffect(() => {
+        setStep(0);
+        dispatch(userAction.getUserLoad({ uid: props.params.createSoup }));
+        dispatch(soupAction.getSoupLoad({ userId: props.params.createSoup, page: 0 }))
+    }, [])
 
     useEffect(() => {
         console.log(props);
-        setStep(0);
-    }, [])
+        console.log(authUser);
+        if (isAuthUserLoad) {
+            if (!authUser) {
+                navigate("/auth/login", { state: { redirect: props.location.pathname } });
+            }
+        }
+    }, [isAuthUserLoad])
 
     const SelectBowl = (e, bowl) => {
         dispatch(trayAction.setBowl(bowl));
@@ -57,15 +57,35 @@ const CreateSoupPage = (props) => {
     }
 
     const confirmBtnClick = () => {
-        html2canvas(document.getElementById("test")).then(canvas => {
-            // onSaveAs(canvas.toDataURL('image/png'), 'image-downlaod.png')
+        html2canvas(document.getElementById("test"), { backgroundColor: null }).then(canvas => {
+            const storageRef = ref(storage, `${props.params.createSoup}/${uuidv4()}.png`);
+            var blobData = dataURItoBlob(canvas.toDataURL('image/png'));
 
-            var blobData = canvas.toBlob((blob) => {
-                if (blob === null) return;
-                var params = {  ACL: 'public-read', Key: "test", ContentType: "image/png", Body: blob };
-                S3Upload(params);
-            }, "image/png")
-        });
+            const uploadTask = uploadBytesResumable(storageRef, blobData);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setProgress(progress);
+
+                    switch (snapshot.state) {
+                        case 'paused':
+                            console.log(console.log('Upload is paused'));
+                            break;
+                        case 'running':
+                            console.log('Upload is running');
+                            break;
+                    }
+                },
+                (error) => {
+                    alert("떡국 이미지 업로드에 실패했습니다.");
+                },
+                () => {
+                    dispatch(trayAction.setSoupImgId(storageRef.name));
+                    dispatch(soupAction.addSoupLoad());
+                }
+            )
+        });      
     }
     
     const onSaveAs = (uri, filename) => {
@@ -78,39 +98,25 @@ const CreateSoupPage = (props) => {
         document.body.removeChild(link);
     }
 
-    const S3Upload = async (url) => {
-        console.log(url);
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
 
-        myBucket.putObject(url)
-            .on('httpUploadProgress', (evt) => {
-            setProgress(Math.round((evt.loaded / evt.total) * 100))
-            }).send((err) => {
-                console.log(err);
-        })
-        // await uploadFile(url, S3Config)
-        //     .then(data => console.log(data))
-        //     .catch(err => console.log(err))
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type:mimeString});
     }
-
-function dataURItoBlob(dataURI) {
-    // convert base64/URLEncoded data component to raw binary data held in a string
-    var byteString;
-    if (dataURI.split(',')[0].indexOf('base64') >= 0)
-        byteString = atob(dataURI.split(',')[1]);
-    else
-        byteString = unescape(dataURI.split(',')[1]);
-
-    // separate out the mime component
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-    // write the bytes of the string to a typed array
-    var ia = new Uint8Array(byteString.length);
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ia], {type:mimeString});
-}
 
     return (
         <Layout>

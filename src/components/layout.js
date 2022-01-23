@@ -48,6 +48,8 @@ const Layout = ({ pageTitle, children }) => {
             }
           })
         }
+      } else {
+        dispatch(userAction.setAuthUser(null));
       }
     })
   }, []);

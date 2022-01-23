@@ -9,11 +9,14 @@ export const initialState = {
     authUser: null,
     searchUserInfo: {},
     isSearchUser: undefined,
+
+    isAuthUserLoad: false,
 }
 
 const reducers = {
-    setAuthUser: (state, { payload: { user } }) => {
-        state.authUser = user;
+    setAuthUser: (state, { payload: profile }) => {
+        state.isAuthUserLoad = true;
+        state.authUser = profile;
     },
     setUserLoad: (state, { payload: { uid, email, displayName } }) => {
         state.isLoading = true;
@@ -135,6 +138,11 @@ const selectIsSearchUserState = createSelector(
     (isSearchUser) => isSearchUser
 )
 
+const selectIsAuthUserLoadState = createSelector(
+    (state) => state.isAuthUserLoad,
+    (isAuthUserLoad) => isAuthUserLoad
+)
+
 export const userSelector = {
     success: (state) => selectSuccessSate(state[USER]),
     isLoading: (state) => selectLoadingState(state[USER]),
@@ -145,6 +153,7 @@ export const userSelector = {
     authUser: (state) => selectAuthUserState(state[USER]),
     searchUserInfo: (state) => selectSearchUserInfoState(state[USER]),
     isSearchUser: (state) => selectIsSearchUserState(state[USER]),
+    isAuthUserLoad: (state) => selectIsAuthUserLoadState(state[USER]),
 }
 
 export const USER = slice.name

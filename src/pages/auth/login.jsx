@@ -10,11 +10,17 @@ import { graphql, navigate, useStaticQuery } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
 
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+
+    useEffect(() => {
+        console.log(props);
+    }, [props])
+
     const clearInputs = () => {
         setEmail('');
         setPassword('');
@@ -29,7 +35,16 @@ const LoginPage = () => {
         try {
             clearErrors();
             const result = await signInWithEmailAndPassword(auth, email, password);
-            navigate("/table/" + result.user.uid);
+            dispatch(userAction.setAuthUser(result.user));
+
+            const state = props.location.state;
+
+            if (state) {
+                const redirect = state.redirect;
+                navigate(redirect);
+            } else {
+                navigate("/table/" + result.user.uid);
+            }
         } catch (err) {
             switch (err.code) {
                 case "auth/invalid-email":
@@ -95,7 +110,7 @@ const LoginPage = () => {
                         <p>다른 서비스 계정으로 로그인</p>
                         <button className={style.outlineButton} onClick={handleLogin}><FaGoogle /> 구글 계정으로 로그인</button>
                         <button className={style.outlineButton} onClick={handleLogin}><FaFacebook /> 페이스북 계정으로 로그인</button>
-                        {/* <button onClick={handleLogout}>로그아웃</button> */}
+                        <button onClick={handleLogout}>로그아웃</button>
                     </div>
                 </div>
             </section>

@@ -44,25 +44,26 @@ const request = {
             page: pageable.page * pageable.size
         }
     }).then(responseBody),
-    addSoup: (soup: Soup) => axios.post(endpoint, {
+    addSoup: (param) => axios.post(endpoint, {
         query:
         `
-            mutation addSoup($userId: String!, $soupImgId: String!, $reqUserId: String!) {
-                insert_SOUP(objects: {USER_ID: $userId, SOUP_IMG_ID: $soupImgId, REQ_USER_ID: $reqUserId}) {
+            mutation addSoup($userId: String!, $soupImgId: String!, $reqUserId: String!, $soupContents: String!) {
+                insert_SOUP(objects: {USER_ID: $userId, SOUP_IMG_ID: $soupImgId, REQ_USER_ID: $reqUserId, SOUP_DETAIL: {data: { SOUP_CONTENTS: $soupContents, USER_ID: $userId }}}) {
                     affected_rows
                 }
             }
 
         `,
         variables: {
-            userId: soup.owner,
-            soupImgId: soup.soupImgId,
-            reqUserId: soup.sender,
+            userId: param.owner,
+            soupImgId: param.soupImgId,
+            reqUserId: param.sender,
+            soupContents: param.message,
         }
     }).then(responseBody),
 }
 
 export const SoupAPI = {
     getSoup: (user: User, pageable: Pageable): Promise<Soup> => request.getSoup(user, pageable),
-    addSoup: (soup: Soup): Promise<Soup> => request.addSoup(soup),
+    addSoup: (param): Promise<Soup> => request.addSoup(param),
 }

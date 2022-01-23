@@ -17,7 +17,7 @@ export function* setUser() {
 }
 
 export function* isSignUp() {
-    const { isSignUpSuccess, isSignUpFail, setUserSuccess, setAuthUser } = userAction
+    const { isSignUpSuccess, isSignUpFail, setUserSuccess, setAuthUser, setUserLoad } = userAction
 
     try {
         const profile = yield select(userSelector.profile)
@@ -34,6 +34,7 @@ export function* isSignUp() {
         if (profile != null) {
             if (count <= 0) {
                 yield put(setUserSuccess(profile))
+                yield put(setUserLoad())
             } else {
                 yield put(setAuthUser(profile))
             }

@@ -2,6 +2,8 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Pageable } from '../../types/Pageable';
 import { User } from '../../types/User';
 import * as _ from 'lodash'
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../firebase';
 
 export const initialState = {
     success: false,
@@ -57,6 +59,9 @@ const reducers = {
         state.isLoading = false;
         state.success = false;
         state.error = error;
+    },
+    clearSoupList: (state) => {
+        state.soupList = [];
     }
 }
 

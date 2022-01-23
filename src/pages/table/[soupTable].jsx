@@ -9,6 +9,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { soupAction, soupSelector } from "./slice";
 import { navigate } from "gatsby";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../firebase";
+import * as _ from 'lodash'
 
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
@@ -31,9 +34,14 @@ const SoupTablePage = (props) => {
     };
 
     useEffect(() => {
+        dispatch(soupAction.clearSoupList());
         dispatch(userAction.getUserLoad({ uid: props.params.soupTable }));
         dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: 0 }))
     }, [])
+
+    // useEffect(() => {
+    //     console.log(soupList[pageable.page]);
+    // }, [pageable.page])    
 
     useEffect(() => {
         setTotalPage(Math.ceil(totalCount / pageable.size));
@@ -50,6 +58,13 @@ const SoupTablePage = (props) => {
 
     const CreateSoup = () => {
         navigate("/tray/" + props.params.soupTable)
+    }
+
+    const SoupImg = (position, soupImgId) => {
+        const pathReference = ref(storage, `${props.params.soupTable}/${soupImgId}`);
+
+        getDownloadURL(pathReference).then((url) => {
+        });
     }
 
     return (
@@ -71,33 +86,33 @@ const SoupTablePage = (props) => {
                                                     <img src={"/table.png"} width={350} />
                                                 </div>
                                             :
-                                            [...Array(totalPage)].map((e, i) => {
+                                                [...Array(totalPage)].map((e, i) => {
                                                 return <div key={i} className={style.soupTable}>
                                                     <img src={"/table.png"} width={350} />
                                                     <div className={style.soupPostion01}>
                                                         {soupList[pageable.page].length > 0 ?
-                                                            <img src={"/" + soupList[pageable.page][0]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            <img src={`https://firebasestorage.googleapis.com/v0/b/newyearsoup.appspot.com/o/${props.params.soupTable}%2F${soupList[pageable.page][0]["SOUP_IMG_ID"]}?alt=media&token=6b4c3e17-e90a-4186-8127-8e07ae9e2daf`} width={100} />
                                                             :
                                                             <div className="loader-white"></div>
                                                         }
                                                     </div>
                                                     <div className={style.soupPostion02}>
                                                         {soupList[pageable.page].length > 1 ?
-                                                            <img src={"/" + soupList[pageable.page][1]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            <img src={`https://firebasestorage.googleapis.com/v0/b/newyearsoup.appspot.com/o/${props.params.soupTable}%2F${soupList[pageable.page][1]["SOUP_IMG_ID"]}?alt=media&token=6b4c3e17-e90a-4186-8127-8e07ae9e2daf`} width={100} />
                                                             :
                                                             <></>
                                                         }
                                                     </div>
                                                     <div className={style.soupPostion03}>
                                                         {soupList[pageable.page].length > 2 ?
-                                                            <img src={"/" + soupList[pageable.page][2]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            <img src={`https://firebasestorage.googleapis.com/v0/b/newyearsoup.appspot.com/o/${props.params.soupTable}%2F${soupList[pageable.page][2]["SOUP_IMG_ID"]}?alt=media&token=6b4c3e17-e90a-4186-8127-8e07ae9e2daf`} width={100} />
                                                             :
                                                             <></>
                                                         }
                                                     </div>
                                                     <div className={style.soupPostion04}>
                                                         {soupList[pageable.page].length > 3 ?
-                                                            <img src={"/" + soupList[pageable.page][3]["SOUP_IMG_ID"] + ".png"} width={100} />
+                                                            <img src={`https://firebasestorage.googleapis.com/v0/b/newyearsoup.appspot.com/o/${props.params.soupTable}%2F${soupList[pageable.page][3]["SOUP_IMG_ID"]}?alt=media&token=6b4c3e17-e90a-4186-8127-8e07ae9e2daf`} width={100} />
                                                             :
                                                             <></>
                                                         }
