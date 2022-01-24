@@ -2,15 +2,19 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 export const initialState = {
     success: false,
     isLoading: false,
-    isSignUp: null,
-    msg: "",
     error: "",
-    profile: null,
-    authUser: null,
-    searchUserInfo: {},
-    isSearchUser: undefined,
+
+    isSignUp: null, // 회원가입 여부
+    profile: null, // 로그인한 사용자 정보
 
     isAuthUserLoad: false,
+    authUser: null,
+
+    searchUserInfo: {}, //검색 유저정보
+    isSearchUser: undefined, // 검색유저 존재여부
+
+    authUserParam: {},
+    searchUserParam: {},
 }
 
 const reducers = {
@@ -18,56 +22,36 @@ const reducers = {
         state.isAuthUserLoad = true;
         state.authUser = profile;
     },
-    setUserLoad: (state, { payload: { uid, email, displayName } }) => {
-        state.isLoading = true;
-        state.success = false;
-
-        state.profile = {
-            "userId": uid,
-            "userEmail": email,
-            "userName": displayName,
-        }
-    },
-    setUserSuccess: (state, payload) => {
-        state.isLoading = false;
-        state.success = true;
-    },
-    setUserFail: (state, { payload: error }) => {
-        state.isLoading = false;
-        state.success = false;
-        state.error = error
-    },
     isSignUpLoad: (state, { payload: { uid, email, displayName } }) => {
         state.isLoading = true;
         state.isSignUp = false;
         state.success = false;
 
-        state.profile = {
+        state.authUserParam = {
             "userId": uid,
             "userEmail": email,
             "userName": displayName
         }
     },
-    isSignUpSuccess: (state, { payload: { count } }) => {
+    isSignUpSuccess: (state, { payload: { isSiginUp, profile } }) => {
         state.isLoading = false;
         state.success = true;
-
-        if (count > 0) {
-            state.isSignUp = true;
-        } else {
-            state.isSignUp = false;
-        }
+        state.isSignUp = isSiginUp
+        state.profile = profile
     },
     isSignUpFail: (state, { payload: error }) => {
         state.isLoading = false;
+        state.isSignUp = false;
         state.success = false;
+        state.profile = null;
         state.error = error;
     },
     getUserLoad: (state, { payload: { uid } }) => {
         state.isLoading = true;
         state.success = false;
         state.isSearchUser = undefined;
-        state.profile = {
+        state.searchUserParam = {
+            ...state.searchUserParam,
             "userId": uid
         }
     },
@@ -113,11 +97,6 @@ const selectErrorState = createSelector(
     (error) => error
 )
 
-const selectMsgState = createSelector(
-    (state) => state.msg,
-    (msg) => msg
-)
-
 const selectProfileState = createSelector(
     (state) => state.profile,
     (profile) => profile
@@ -143,17 +122,26 @@ const selectIsAuthUserLoadState = createSelector(
     (isAuthUserLoad) => isAuthUserLoad
 )
 
+const selectAuthUserParamState = createSelector(
+    (state) => state.authUserParam,
+    (authUserParam) => authUserParam
+)
+const selectSearchUserParamState = createSelector(
+    (state) => state.searchUserParam,
+    (searchUserParam) => searchUserParam
+)
 export const userSelector = {
     success: (state) => selectSuccessSate(state[USER]),
     isLoading: (state) => selectLoadingState(state[USER]),
     isSignUp: (state) => selectSignUpState(state[USER]),
     error: (state) => selectErrorState(state[USER]),
-    msg: (state) => selectMsgState(state[USER]),
     profile: (state) => selectProfileState(state[USER]),
     authUser: (state) => selectAuthUserState(state[USER]),
     searchUserInfo: (state) => selectSearchUserInfoState(state[USER]),
     isSearchUser: (state) => selectIsSearchUserState(state[USER]),
     isAuthUserLoad: (state) => selectIsAuthUserLoadState(state[USER]),
+    authUserParam: (state) => selectAuthUserParamState(state[USER]),
+    searchUserParam: (state) => selectSearchUserParamState(state[USER]),
 }
 
 export const USER = slice.name

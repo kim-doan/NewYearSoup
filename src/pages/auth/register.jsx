@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from '../../firebase'
 import Layout from '../../components/layout'
-import { userAction } from "./slice";
+import { userAction, userSelector } from "./slice";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import * as style from './register.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
@@ -21,6 +21,8 @@ const RegisterPage = (props) => {
     const [passwordError, setPasswordError] = useState('');
     const [passwordConfirmError, setPasswordConfirmError] = useState('');
     const [hasAccount, setHasAccount] = useState(false);
+
+    const isSignUp = useSelector(userSelector.isSignUp);
 
     onAuthStateChanged(auth, (currentUser) => {
         // setUser(currentUser);
@@ -43,9 +45,10 @@ const RegisterPage = (props) => {
             clearErrors();
             const result = await signInWithEmailAndPassword(auth, email, password);
 
-            dispatch(userAction.setAuthUser(result.user));
-
-            navigate("/table/" + result.user.uid);
+            if (result) {
+                dispatch(userAction.isSignUpLoad(result.user));
+                navigate("/table/" + result.user.uid);
+            }
         } catch (err) {
             switch (err.code) {
                 case "auth/invalid-email":
@@ -69,14 +72,21 @@ const RegisterPage = (props) => {
             clearErrors();
             if (name.length < 2 && name.length > 6) {
                 setNameError('닉네임을 2 ~ 6자 이내로 정해주세요.')
+                return;
             }
             if (password !== passwordConfirm) {
                 setPasswordConfirmError('비밀번호를 다시 확인해주세요.')
+                return;
             }
             const result = await createUserWithEmailAndPassword(auth, email, password);
 
-            await updateProfile(result.user, { displayName: name });
-            await handleLogin();
+            if (result) {
+                updateProfile(auth.currentUser, {
+                    displayName: name
+                }).then(() => {
+                    handleLogin();
+                })
+            }
         } catch (err) {
             switch (err.code) {
                 case "auth/email-already-in-use":
@@ -138,7 +148,7 @@ const RegisterPage = (props) => {
                     <p className={style.errorMsg}>{passwordConfirmError}</p>
                     <div className={style.btnContainer}>
                         <button onClick={handleSignup}>떡국 만들러가기</button>
-                        <button className={style.outlineButton} onClick={() => {navigate("/auth/login")}}>로그인 하러가기</button>
+                        <button className={style.outlineButton} onClick={() => { navigate("/auth/login") }}>로그인 하러가기</button>
                     </div>
                 </div>
             </section>

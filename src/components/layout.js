@@ -2,14 +2,9 @@ import React, { useEffect } from 'react'
 import { graphql, Link, useStaticQuery } from 'gatsby'
 import { auth, database } from '../firebase'
 import { onValue, ref } from '@firebase/database';
+import { reload } from '@firebase/auth'
 import {
   container,
-  heading,
-  navLinks,
-  navLinkItem,
-  navLinkText,
-  siteTitle,
-
 } from './layout.module.css'
 import SideBar from './sidebar'
 import { userAction, userSelector } from '../pages/auth/slice';
@@ -25,7 +20,11 @@ const Layout = ({ pageTitle, children }) => {
         const idTokenResult = await user.getIdTokenResult();
         const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
         console.log(hasuraClaim);
-        dispatch(userAction.isSignUpLoad(user));
+
+        if (user.displayName) {
+          dispatch(userAction.isSignUpLoad(user));
+        }
+
 
         if (hasuraClaim) {
           axios.defaults.headers.common["x-hasura-allowed-roles"] = hasuraClaim["x-hasura-allowed-roles"];

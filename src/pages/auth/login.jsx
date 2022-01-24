@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { auth } from '../../firebase'
 import Layout from '../../components/layout'
 import { userAction } from "./slice";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import * as style from './login.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { graphql, navigate, useStaticQuery } from "gatsby";
@@ -35,7 +35,6 @@ const LoginPage = (props) => {
         try {
             clearErrors();
             const result = await signInWithEmailAndPassword(auth, email, password);
-            dispatch(userAction.setAuthUser(result.user));
 
             const state = props.location.state;
 

@@ -2,42 +2,29 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { userAction, userSelector } from './slice'
 import { AuthAPI } from '../../api/auth'
 
-export function* setUser() {
-    const { setUserSuccess, setUserFail } = userAction
-
-    try {
-        const profile = yield select(userSelector.profile)
-
-        const result = yield call(AuthAPI.setUser, profile)
-
-        yield put(setUserSuccess(result));
-    } catch (err) {
-        yield put(setUserFail(err));
-    }
-}
-
 export function* isSignUp() {
-    const { isSignUpSuccess, isSignUpFail, setUserSuccess, setAuthUser, setUserLoad } = userAction
+    const { isSignUpSuccess, isSignUpFail } = userAction
 
     try {
-        const profile = yield select(userSelector.profile)
-        const result = yield call(AuthAPI.isSignUp, profile)
+        const authUserParam = yield select(userSelector.authUserParam)
+        const result = yield call(AuthAPI.isSignUp, authUserParam)
 
         var count = result.data.USER_aggregate.aggregate.count;
 
-        yield put(
-            isSignUpSuccess({
-                count: count
-            })
-        );
+        const isSignUp = count > 0;
 
-        if (profile != null) {
-            if (count <= 0) {
-                yield put(setUserSuccess(profile))
-                yield put(setUserLoad())
-            } else {
-                yield put(setAuthUser(profile))
-            }
+        if (isSignUp) {
+            yield put(isSignUpSuccess({
+                isSiginUp: isSignUp,
+                profile: authUserParam
+            }));
+        } else {
+            var test = yield call(AuthAPI.addUser, authUserParam);
+            console.log(test);
+            yield put(isSignUpSuccess({
+                isSiginUp: isSignUp,
+                profile: authUserParam
+            }));
         }
     } catch (err) {
         yield put(isSignUpFail(err));
@@ -48,8 +35,8 @@ export function* getUser() {
     const { getUserSuccess, getUserFail } = userAction
 
     try {
-        const profile = yield select(userSelector.profile)
-        const result = yield call(AuthAPI.getUser, profile);
+        const searchUserParam = yield select(userSelector.searchUserParam)
+        const result = yield call(AuthAPI.getUser, searchUserParam);
 
         if (result.data.USER.length > 0) {
             yield put(
@@ -65,8 +52,6 @@ export function* getUser() {
                     isSearchUser: false
                 })
             );
-
-            // navigate("404.js")
         }
     } catch (err) {
         yield put(getUserFail(err));
@@ -74,9 +59,8 @@ export function* getUser() {
 }
 
 export function* watchUser() {
-    const { setUserLoad, isSignUpLoad, getUserLoad } = userAction
+    const { isSignUpLoad, getUserLoad } = userAction
 
-    yield takeLatest(setUserLoad, setUser)
     yield takeLatest(isSignUpLoad, isSignUp)
     yield takeLatest(getUserLoad, getUser)
 }

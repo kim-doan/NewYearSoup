@@ -10,14 +10,14 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 const request = {
     //사용자 등록 (회원가입)
-    setUser: (user: User) => axios.post(endpoint, {
+    addUser: (user: User) => axios.post(endpoint, {
         query:
             `
-        mutation addUser($userId: String!, $userName: String!, $userEmail: String!) {
-            insert_USER(objects: {USER_EMAIL: $userEmail, USER_ID: $userId, USER_NAME: $userName}) {
-            affected_rows
+            mutation addUser($userId: String!, $userName: String!, $userEmail: String!) {
+                insert_USER(objects: {USER_EMAIL: $userEmail, USER_ID: $userId, USER_NAME: $userName}) {
+                affected_rows
+                }
             }
-        }
         `,
         variables: {
             userId: user.userId,
@@ -44,7 +44,7 @@ const request = {
     //전체 회원 ID 불러오기
     getUser: (user: User) => axios.post(endpoint, {
         query:
-        `
+            `
             query findByUserId($userId: String!) {
                 USER(where: {USER_ID: {_eq: $userId}}) {
                     USER_EMAIL
@@ -60,7 +60,7 @@ const request = {
 }
 
 export const AuthAPI = {
-    setUser: (user: User): Promise<User> => request.setUser(user),
+    addUser: (user: User): Promise<User> => request.addUser(user),
     isSignUp: (user: User): Promise<Number> => request.isSignUp(user),
     getUser: (user: User): Promise<User> => request.getUser(user),
 }
