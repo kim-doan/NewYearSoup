@@ -3,64 +3,25 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelector } from '../reducers/auth/slice';
+import { auth } from '../firebase';
 
 export const SidebarData = [
   {
-    title: 'Overview',
-    path: '/overview',
+    title: '홈 화면으로 이동',
+    path: '/',
     icon: <AiIcons.AiFillHome />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    subNav: [
-      {
-        title: 'Users',
-        path: '/overview/users',
-        icon: <IoIcons.IoIosPaper />
-      },
-      {
-        title: 'Revenue',
-        path: '/overview/revenue',
-        icon: <IoIcons.IoIosPaper />
-      }
-    ]
   },
   {
-    title: 'Reports',
-    path: '/reports',
-    icon: <IoIcons.IoIosPaper />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    subNav: [
-      {
-        title: 'Reports',
-        path: '/reports/reports1',
-        icon: <IoIcons.IoIosPaper />,
-        cName: 'sub-nav'
-      },
-      {
-        title: 'Reports 2',
-        path: '/reports/reports2',
-        icon: <IoIcons.IoIosPaper />,
-        cName: 'sub-nav'
-      },
-      {
-        title: 'Reports 3',
-        path: '/reports/reports3',
-        icon: <IoIcons.IoIosPaper />
-      }
-    ]
+    title: '내 밥상 보러가기',
+    path: auth.currentUser != null ? `/table/${auth.currentUser.uid}` : '/auth/login',
+    icon: <AiIcons.AiFillProfile />,
   },
   {
-    title: 'About',
-    path: '/about',
-    icon: <FaIcons.FaCartPlus />
-  },
-  {
-    title: 'Team',
-    path: '/team',
-    icon: <IoIcons.IoMdPeople />
+    title: '로그아웃',
+    path: '/',
+    icon: <AiIcons.AiOutlineLogout />,
   },
   {
     title: 'Messages',
@@ -83,9 +44,4 @@ export const SidebarData = [
       }
     ]
   },
-  {
-    title: 'Support',
-    path: '/support',
-    icon: <IoIcons.IoMdHelpCircle />
-  }
 ];

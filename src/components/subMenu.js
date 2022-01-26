@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const SidebarLink = styled(Link)`
   display: flex;
-  color: #e1e9fc;
+  color: #e5d5c6;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
@@ -13,15 +13,15 @@ const SidebarLink = styled(Link)`
   text-decoration: none;
   font-size: 18px;
   &:hover {
-    background: #252831;
-    border-left: 4px solid #632ce4;
+    background: #9c4b3a;
+    border-left: 4px solid white;
     cursor: pointer;
   }
 `;
 
 const Dropdown = styled.span`
   display: flex;
-  color: #e1e9fc;
+  color: #9c4b3a;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
@@ -30,8 +30,8 @@ const Dropdown = styled.span`
   text-decoration: none;
   font-size: 18px;
   &:hover {
-    background: #252831;
-    border-left: 4px solid #632ce4;
+    background: #9c4b3a;
+    border-left: 4px solid white;
     cursor: pointer;
   }
 `;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { navigate } from "gatsby";
 import Layout from "../../components/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../auth/slice";
+import { userSelector } from "../../reducers/auth/slice";
 import * as style from "./notFound.module.css"
 import { GiTable } from "react-icons/gi"
 

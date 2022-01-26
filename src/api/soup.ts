@@ -44,11 +44,27 @@ const request = {
             page: pageable.page * pageable.size
         }
     }).then(responseBody),
+    getSoupDetail: (soupNo: Number) => axios.post(endpoint, {
+        query: 
+        `
+            query getSoupDetail($soupNo: Int!) {
+                SOUP_DETAIL(where: { SOUP_NO:{_eq:$soupNo} }) {
+                    USER_ID
+                    REQ_USER_ID
+                    SOUP_NO
+                    SOUP_CONTENTS
+                }
+            }
+        `,
+        variables: {
+            soupNo: soupNo
+        }
+    }).then(responseBody),
     addSoup: (param) => axios.post(endpoint, {
         query:
         `
             mutation addSoup($userId: String!, $soupImgId: String!, $reqUserId: String!, $soupContents: String!) {
-                insert_SOUP(objects: {USER_ID: $userId, SOUP_IMG_ID: $soupImgId, REQ_USER_ID: $reqUserId, SOUP_DETAIL: {data: { SOUP_CONTENTS: $soupContents, USER_ID: $userId }}}) {
+                insert_SOUP(objects: {USER_ID: $userId, SOUP_IMG_ID: $soupImgId, REQ_USER_ID: $reqUserId, SOUP_DETAIL: {data: { SOUP_CONTENTS: $soupContents, USER_ID: $userId, REQ_USER_ID: $reqUserId }}}) {
                     affected_rows
                 }
             }
@@ -65,5 +81,6 @@ const request = {
 
 export const SoupAPI = {
     getSoup: (user: User, pageable: Pageable): Promise<Soup> => request.getSoup(user, pageable),
+    getSoupDetail: (soupNo: Number): Promise<Soup> => request.getSoupDetail(soupNo),
     addSoup: (param): Promise<Soup> => request.addSoup(param),
 }

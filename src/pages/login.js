@@ -4,7 +4,7 @@ import { auth, database } from '../firebase'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { onValue, ref } from '@firebase/database';
 import { useDispatch } from "react-redux";
-import { userAction } from "./auth/slice";
+import { userAction } from "../reducers/auth/slice";
 
 const IndexPage = () => {
     const dispatch = useDispatch();

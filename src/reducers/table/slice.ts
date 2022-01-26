@@ -1,9 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { Pageable } from '../../types/Pageable';
-import { User } from '../../types/User';
 import * as _ from 'lodash'
-import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '../../firebase';
 
 export const initialState = {
     success: false,
@@ -16,7 +12,9 @@ export const initialState = {
     pageable: {
         page: 0,
         size: 4,
-    }
+    },
+    soupDetail: {},
+    soupNo: null,
 }
 
 const reducers = {
@@ -46,6 +44,21 @@ const reducers = {
         state.isLoading = false;
         state.success = false;
         state.error = error
+    },
+    getSoupDetailLoad: (state, { payload: { soupNo } }) => {
+        state.isLoading = true;
+        state.success = false;
+        state.soupNo = soupNo;
+    },
+    getSoupDetailSuccess: (state, { payload: { soupDetail } }) => {
+        state.isLoading = false;
+        state.success = true;
+        state.soupDetail = soupDetail;
+    },
+    getSoupDetailFail: (state, { payload: { error } }) => {
+        state.isLoading = false;
+        state.success = false;
+        state.error = error;
     },
     addSoupLoad: (state) => {
         state.isLoading = true;
@@ -105,6 +118,14 @@ const selectTotalCountState = createSelector(
     (state) => state.totalCount,
     (totalCount) => totalCount
 )
+const selectSoupDetailState = createSelector(
+    (state) => state.soupDetail,
+    (soupDetail) => soupDetail   
+)
+const selectSoupNoState = createSelector(
+    (state) => state.soupNo,
+    (soupNo) => soupNo
+)
 
 export const soupSelector = {
     success: (state) => selectSuccessSate(state[SOUP]),
@@ -114,7 +135,9 @@ export const soupSelector = {
     ownerInfo: (state) => selectOwnerInfoState(state[SOUP]),
     soupList: (state) => selectSoupListState(state[SOUP]),
     pageable: (state) => selectPageableState(state[SOUP]),
-    totalCount: (state) => selectTotalCountState(state[SOUP])
+    totalCount: (state) => selectTotalCountState(state[SOUP]),
+    soupDetail: (state) => selectSoupDetailState(state[SOUP]),
+    soupNo: (state) => selectSoupNoState(state[SOUP]),
 }
 
 export const SOUP = slice.name

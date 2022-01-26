@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { userAction, userSelector } from './slice'
 import { AuthAPI } from '../../api/auth'
+import { navigate } from 'gatsby'
 
 export function* isSignUp() {
     const { isSignUpSuccess, isSignUpFail } = userAction
@@ -13,16 +14,16 @@ export function* isSignUp() {
 
         const isSignUp = count > 0;
 
-        if (isSignUp) {
+        if (isSignUp === true) {
             yield put(isSignUpSuccess({
                 isSiginUp: isSignUp,
                 profile: authUserParam
             }));
         } else {
-            var test = yield call(AuthAPI.addUser, authUserParam);
-            console.log(test);
+            yield call(AuthAPI.addUser, authUserParam);
+
             yield put(isSignUpSuccess({
-                isSiginUp: isSignUp,
+                isSiginUp: true,
                 profile: authUserParam
             }));
         }

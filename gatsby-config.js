@@ -4,8 +4,8 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    siteUrl: "https://www.yourdomain.tld",
-    title: "Notion-Mini",
+    siteUrl: "https://newyearsoup.web.app/",
+    title: "내 떡국을 끓여줘",
   },
   plugins: [
     "gatsby-transformer-sharp",

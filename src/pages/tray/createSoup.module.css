@@ -27,7 +27,7 @@
 
 .sideMenu {
   position: absolute;
-  top: 0;
+  bottom: 0;
   z-index: 1;
 }
 .decoration {
@@ -167,13 +167,16 @@ img {
   background: transparent;
   padding: 0;
   border: none;
-  overflow: hidden;
   font-family: "Jua";
   font-size: 20px;
 }
 
 .inputTransParent:focus {
   outline: none;
+}
+
+.inputTransParent::-webkit-scrollbar {
+  display: none;
 }
 
 .inputArea {

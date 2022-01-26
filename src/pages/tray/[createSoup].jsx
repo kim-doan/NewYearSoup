@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/layout";
 import * as style from "./createsoup.module.css";
 import html2canvas from 'html2canvas';
-import { trayAction, traySelector } from "./slice";
+import { trayAction, traySelector } from "../../reducers/tray/slice";
 import { navigate } from "gatsby";
 import { storage } from "../../firebase"
 import { v4 as uuidv4 } from "uuid";
-import { soupAction } from "../table/slice";
+import { soupAction } from "../../reducers/table/slice";
 import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
-import { userAction, userSelector } from "../auth/slice";
+import { userAction, userSelector } from "../../reducers/auth/slice";
     
 const CreateSoupPage = (props) => {
     const dispatch = useDispatch();
@@ -151,22 +151,30 @@ const CreateSoupPage = (props) => {
                 }
                 {step === 1 ?
                     <div className={style.sideMenuContainer}>
-                        <div className={style.container}>
-                            <img src={"/sideTray.png"} width={350} />
+                        <div className={style.container} onClick={(e) => SelectDecoration(e, "greenOnion")}>
+                            <div className={style.sideTray}>
+                                <img src={"/sideTray.png"} width={350} />
+                                {!decorations.includes("greenOnion") ?
+                                    <div className={style.sideMenu}>
+                                        <img src={"/greenOnion.png"} width={100} />
+                                    </div>
+                                    : <></>
+                                }
+                            </div>
                         </div>
                         <div className={style.container} onClick={(e) => SelectDecoration(e, "meat")}>
                             <div className={style.sideTray}>
                                 <img src={"/sideTray.png"} width={350} />
                                 {!decorations.includes("meat") ?
                                     <div className={style.sideMenu}>
-                                        <img src={"/meat.png"} width={60} />
+                                        <img src={"/meat.png"} width={100} />
                                     </div>
                                     : <></>
                                 }
                             </div>
                         </div>
-                        <div className={style.container}>
-                            <div className={style.sideTray} onClick={(e) => SelectDecoration(e, "pepper")}>
+                        <div className={style.container} onClick={(e) => SelectDecoration(e, "pepper")}>
+                            <div className={style.sideTray}>
                                 <img src={"/sideTray.png"} width={350} />
                                 {!decorations.includes("pepper") ?
                                     <div className={style.sideMenu}>
@@ -176,24 +184,43 @@ const CreateSoupPage = (props) => {
                                 }
                             </div>
                         </div>
-                        <div className={style.container}>
+                        <div className={style.container} onClick={(e) => SelectDecoration(e, "egg")}>
                             <div className={style.sideTray}>
                                 <img src={"/sideTray.png"} width={350} />
-                                <div className={style.sideMenu}>
-                                    <img src={"/curry.png"} width={70} />
-                                </div>
+                                {!decorations.includes("egg") ?
+                                    <div className={style.sideMenu}>
+                                        <img src={"/egg.png"} width={100} />
+                                    </div>
+                                    : <></>
+                                }
                             </div>
                         </div>
-                        <div className={style.container}>
-                            <img src={"/sideTray.png"} width={350} />
+                        <div className={style.container} onClick={(e) => SelectDecoration(e, "gimgaru")}>
+                            <div className={style.sideTray}>
+                                <img src={"/sideTray.png"} width={350} />
+                                {!decorations.includes("gimgaru") ?
+                                    <div className={style.sideMenu}>
+                                        <img src={"/gimgaru.png"} width={100} />
+                                    </div>
+                                    : <></>
+                                }
+                            </div>
                         </div>
-                        <div className={style.container}>
-                            <img src={"/sideTray.png"} width={350} />
+                        <div className={style.container} onClick={(e) => SelectDecoration(e, "dumpling")}>
+                            <div className={style.sideTray}>
+                                <img src={"/sideTray.png"} width={350} />
+                                {!decorations.includes("dumpling") ?
+                                    <div className={style.sideMenu}>
+                                        <img src={"/dumpling.png"} width={100} />
+                                    </div>
+                                    : <></>
+                                }
+                            </div>
                         </div>
                     </div>
                     : <></>
                 }
-                {step === 2 ? 
+                {step === 2 ?
                     <div className={style.messageContainer}>
                         <div className={style.scrollContainer}>
                             {/* <img src={"/scroll.png"} width={320} /> */}
@@ -203,10 +230,10 @@ const CreateSoupPage = (props) => {
                                     spellCheck={false}
                                     placeholder="200자 이내로 입력해주세요."
                                     onChange={(e) => dispatch(trayAction.setMessage(e.target.value))}></textarea>
-                                </div>
+                            </div>
                         </div>
                     </div>
-                :<></>}
+                    : <></>}
                 <div className={style.btnContainer}>
                     <button className={style.madeButton} onClick={prevBtnClick}>이전</button>
                     {step <= 1 ?

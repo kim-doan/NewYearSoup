@@ -18,9 +18,9 @@ export const initialState = {
 }
 
 const reducers = {
-    setAuthUser: (state, { payload: profile }) => {
+    setAuthUser: (state, { payload: authUser }) => {
         state.isAuthUserLoad = true;
-        state.authUser = profile;
+        state.authUser = authUser;
     },
     isSignUpLoad: (state, { payload: { uid, email, displayName } }) => {
         state.isLoading = true;

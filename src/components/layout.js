@@ -7,12 +7,14 @@ import {
   container,
 } from './layout.module.css'
 import SideBar from './sidebar'
-import { userAction, userSelector } from '../pages/auth/slice';
+import { userAction, userSelector } from '../reducers/auth/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 const Layout = ({ pageTitle, children }) => {
   const dispatch = useDispatch();
+
+  const isSignUp = useSelector(userSelector.isSignUp);
 
   useEffect(() => {
     return auth.onAuthStateChanged(async (user) => {
@@ -21,9 +23,8 @@ const Layout = ({ pageTitle, children }) => {
         const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
         console.log(hasuraClaim);
 
-        if (user.displayName) {
-          dispatch(userAction.isSignUpLoad(user));
-        }
+        dispatch(userAction.isSignUpLoad(user));
+        dispatch(userAction.setAuthUser(user));
 
 
         if (hasuraClaim) {
@@ -66,28 +67,9 @@ const Layout = ({ pageTitle, children }) => {
   return (
     <div>
       <div className={container}>
-        <title>{pageTitle} | {data.site.siteMetadata.title}</title>
-        <SideBar></SideBar>
-        {/* <nav>
-        <ul className={navLinks}>
-          <li className={navLinkItem}>
-            <Link to="/" className={navLinkText}>
-              Home
-            </Link>
-          </li>
-          <li className={navLinkItem}>
-            <Link to="/about" className={navLinkText}>
-              About
-            </Link>
-          </li>
-        <li className={navLinkItem}>
-            <Link to="/blog" className={navLinkText}>
-              Blog
-            </Link>
-          </li>
-        </ul>
-      </nav> */}
+        <title>{data.site.siteMetadata.title}</title>
         <main>
+          <SideBar></SideBar>
           {children}
         </main>
       </div>

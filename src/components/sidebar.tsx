@@ -1,4 +1,4 @@
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as FaIcons from 'react-icons/fa';
@@ -6,9 +6,11 @@ import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const Nav = styled.div`
-  background: #693328;
+  background: #9c4b3a;
   height: 50px;
   display: flex;
   justify-content: flex-start;
@@ -25,7 +27,7 @@ const NavIcon = styled(Link)`
 `;
 
 const SidebarNav = styled.nav <{ sidebar: boolean }>`
-  background: #15171c;
+  background: #9c4b3a;
   width: 250px;
   height: 100vh;
   display: flex;
@@ -48,7 +50,7 @@ const SideBar = ({ pageTitle, children }) => {
 
   return (
     <div>
-      <IconContext.Provider value={{ color: '#fff' }}>
+      <IconContext.Provider value={{ color: 'white' }}>
         <Nav>
           <NavIcon to='#'>
             <FaIcons.FaBars onClick={showSidebar} />
@@ -60,7 +62,7 @@ const SideBar = ({ pageTitle, children }) => {
               <AiIcons.AiOutlineClose onClick={showSidebar} />
             </NavIcon>
             {SidebarData.map((item, index) => {
-              return <SubMenu item={item} key={index} />;
+                return <SubMenu item={item} key={index} />;
             })}
           </SidebarWrap>
         </SidebarNav>

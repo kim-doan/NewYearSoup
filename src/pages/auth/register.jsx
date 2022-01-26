@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from '../../firebase'
 import Layout from '../../components/layout'
-import { userAction, userSelector } from "./slice";
+import { userAction, userSelector } from "../../reducers/auth/slice";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import * as style from './register.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { navigate } from "gatsby";
+import { AuthAPI } from "../../api/auth";
 
 const RegisterPage = (props) => {
     const dispatch = useDispatch();
@@ -44,10 +45,16 @@ const RegisterPage = (props) => {
         try {
             clearErrors();
             const result = await signInWithEmailAndPassword(auth, email, password);
-
+            
             if (result) {
-                dispatch(userAction.isSignUpLoad(result.user));
-                navigate("/table/" + result.user.uid);
+                const param = {
+                    userId : result.user.uid,
+                    userName : result.user.displayName,
+                    userEmail : result.user.email,
+                }
+                AuthAPI.addUser(param).then(() => {
+                    navigate("/table/" + result.user.uid);
+                })
             }
         } catch (err) {
             switch (err.code) {
@@ -78,16 +85,23 @@ const RegisterPage = (props) => {
                 setPasswordConfirmError('비밀번호를 다시 확인해주세요.')
                 return;
             }
-            const result = await createUserWithEmailAndPassword(auth, email, password);
+            
+            const result = await createUserWithEmailAndPassword(auth, email, password).then((user) => {
+                return updateProfile(auth.currentUser,
+                    {
+                        displayName: name
+                    }).then(() => {
+                        return user;
+                    })
+            });
+
+            dispatch(userAction.isSignUpLoad(result));
 
             if (result) {
-                updateProfile(auth.currentUser, {
-                    displayName: name
-                }).then(() => {
-                    handleLogin();
-                })
+                handleLogin();
             }
         } catch (err) {
+            console.log(err);
             switch (err.code) {
                 case "auth/email-already-in-use":
                     setEmailError("이미 사용중인 이메일이에요.");

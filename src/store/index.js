@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects'
-import { watchUser } from '../pages/auth/saga'
-import { USER, userReducer } from '../pages/auth/slice'
-import { watchSoup } from '../pages/table/saga'
-import { SOUP, soupReducer } from '../pages/table/slice'
-import { TRAY, trayReducer } from '../pages/tray/slice'
+import { watchUser } from '../reducers/auth/saga'
+import { USER, userReducer } from '../reducers/auth/slice'
+import { watchSoup } from '../reducers/table/saga'
+import { SOUP, soupReducer } from '../reducers/table/slice'
+import { TRAY, trayReducer } from '../reducers/tray/slice'
 
 export const rootReducer = combineReducers({
     [USER]: userReducer,

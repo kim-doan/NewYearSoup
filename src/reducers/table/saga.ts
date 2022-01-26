@@ -4,8 +4,6 @@ import { SoupAPI } from '../../api/soup'
 import { traySelector } from '../tray/slice';
 import { userSelector } from '../auth/slice';
 import { navigate } from 'gatsby';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '../../firebase';
 import * as _ from 'lodash'
 
 export function* getSoup() {
@@ -36,6 +34,28 @@ export function* getSoup() {
     }
 }
 
+export function* getSoupDetail() {
+    const { getSoupDetailSuccess, getSoupDetailFail } = soupAction;
+
+    try {
+        const soupNo = yield select(soupSelector.soupNo);
+
+        const result = yield call(SoupAPI.getSoupDetail, soupNo);
+
+        console.log(result.data.SOUP_DETAIL)
+        if (result.data.SOUP_DETAIL.length > 0) {
+            yield put(
+                getSoupDetailSuccess({
+                    soupDetail: result.data.SOUP_DETAIL[0]
+                })
+            )
+        }
+    } catch (err) {
+        console.log(err);
+        yield put(getSoupDetailFail(err));
+    }
+}
+
 export function* addSoup() {
     const { addSoupSuccess, addSoupFail } = soupAction;
 
@@ -48,7 +68,7 @@ export function* addSoup() {
         const param = {
             owner: ownerInfo.userId,
             soupImgId: soupImgId,
-            sender: authUser.userId,
+            sender: authUser.uid,
             message: message,
         }
         
@@ -65,8 +85,9 @@ export function* addSoup() {
 }
 
 export function* watchSoup() {
-    const { getSoupLoad, addSoupLoad } = soupAction
+    const { getSoupLoad, getSoupDetailLoad, addSoupLoad } = soupAction
 
     yield takeLatest(getSoupLoad, getSoup)
+    yield takeLatest(getSoupDetailLoad, getSoupDetail)
     yield takeLatest(addSoupLoad, addSoup)
 }

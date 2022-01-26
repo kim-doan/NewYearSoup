@@ -51,23 +51,33 @@
 }
 
 .soupPostion01 {
-  top: -6%;
+  top: -11%;
   position: absolute;
   cursor: pointer;
 }
+.soupPositionLabel {
+  position: absolute;
+  width: 80px;
+  text-align: center;
+  bottom: 30px;
+  left: 10px;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  font-family: "Jua";
+}
 .soupPostion02 {
-  bottom: 30%;
+  bottom: 17%;
   position: absolute;
   cursor: pointer;
 }
 .soupPostion03 {
-  top: 13%;
+  top: 11%;
   left: 10%;
   position: absolute;
   cursor: pointer;
 }
 .soupPostion04 {
-  top: 13%;
+  top: 11%;
   right: 10%;
   position: absolute;
   cursor: pointer;
@@ -123,4 +133,27 @@
 .hoverButton:hover span:after {
   opacity: 1;
   right: 0;
+}
+
+.popupScroll {
+  padding: 40px 25px 40px 40px;
+  height: 165px;
+}
+
+.inputTransParent {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-family: "Jua";
+  font-size: 20px;
+}
+.inputTransParent:focus {
+  outline: none;
+}
+
+.inputTransParent::-webkit-scrollbar {
+  display: none;
 }
