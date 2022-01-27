@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { SidebarData } from './SidebarData';
-import SubMenu from './SubMenu';
+import SubMenu from './/SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import _ from 'lodash';
+import { SidebarData } from './sidebarData';
 
 const Nav = styled.div`
   background: #9c4b3a;

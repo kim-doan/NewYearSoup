@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/layout";
-import * as style from "./createsoup.module.css";
+import * as style from "./createSoup.module.css";
 import html2canvas from 'html2canvas';
 import { trayAction, traySelector } from "../../reducers/tray/slice";
 import { navigate } from "gatsby";
@@ -56,32 +56,34 @@ const CreateSoupPage = (props) => {
     }
 
     const confirmBtnClick = () => {
-        html2canvas(document.getElementById("test"), { backgroundColor: null }).then(canvas => {
-            const storageRef = ref(storage, `${props.params.createSoup}/${uuidv4()}.png`);
-            var blobData = dataURItoBlob(canvas.toDataURL('image/png'));
+        if (!addSoupLoading) {
+            html2canvas(document.getElementById("test"), { backgroundColor: null }).then(canvas => {
+                const storageRef = ref(storage, `${props.params.createSoup}/${uuidv4()}.png`);
+                var blobData = dataURItoBlob(canvas.toDataURL('image/png'));
 
-            const uploadTask = uploadBytesResumable(storageRef, blobData);
+                const uploadTask = uploadBytesResumable(storageRef, blobData);
 
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    switch (snapshot.state) {
-                        case 'paused':
-                            console.log(console.log('Upload is paused'));
-                            break;
-                        case 'running':
-                            console.log('Upload is running');
-                            break;
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        switch (snapshot.state) {
+                            case 'paused':
+                                console.log(console.log('Upload is paused'));
+                                break;
+                            case 'running':
+                                console.log('Upload is running');
+                                break;
+                        }
+                    },
+                    (error) => {
+                        alert("떡국 이미지 업로드에 실패했습니다.");
+                    },
+                    () => {
+                        dispatch(trayAction.setSoupImgId(storageRef.name));
+                        dispatch(soupAction.addSoupLoad());
                     }
-                },
-                (error) => {
-                    alert("떡국 이미지 업로드에 실패했습니다.");
-                },
-                () => {
-                    dispatch(trayAction.setSoupImgId(storageRef.name));
-                    dispatch(soupAction.addSoupLoad());
-                }
-            )
-        })
+                )
+            })
+        }
     }
 
     const onSaveAs = (uri, filename) => {
