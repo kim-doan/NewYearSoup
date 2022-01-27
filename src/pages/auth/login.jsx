@@ -111,7 +111,6 @@ const LoginPage = (props) => {
                 userEmail: result.user.email,
             }
 
-
             AuthAPI.addUser(param).then(() => {
                 const state = props.location.state;
 
