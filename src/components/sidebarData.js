@@ -6,6 +6,7 @@ import * as RiIcons from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../reducers/auth/slice';
 import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 export const SidebarData = [
   {
@@ -15,33 +16,12 @@ export const SidebarData = [
   },
   {
     title: '내 밥상 보러가기',
-    path: auth.currentUser != null ? `/table/${auth.currentUser.uid}` : '/auth/login',
+    path: '/auth/login',
     icon: <AiIcons.AiFillProfile />,
   },
   {
     title: '로그아웃',
     path: '/',
     icon: <AiIcons.AiOutlineLogout />,
-  },
-  {
-    title: 'Messages',
-    path: '#',
-    icon: <FaIcons.FaEnvelopeOpenText />,
-
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    subNav: [
-      {
-        title: 'Message 1',
-        path: '/messages/message1',
-        icon: <IoIcons.IoIosPaper />
-      },
-      {
-        title: 'Message 2',
-        path: '/messages/message2',
-        icon: <IoIcons.IoIosPaper />
-      }
-    ]
-  },
+  }
 ];

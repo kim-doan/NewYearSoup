@@ -45,12 +45,12 @@ const RegisterPage = (props) => {
         try {
             clearErrors();
             const result = await signInWithEmailAndPassword(auth, email, password);
-            
+
             if (result) {
                 const param = {
-                    userId : result.user.uid,
-                    userName : result.user.displayName,
-                    userEmail : result.user.email,
+                    userId: result.user.uid,
+                    userName: result.user.displayName,
+                    userEmail: result.user.email,
                 }
                 AuthAPI.addUser(param).then(() => {
                     navigate("/table/" + result.user.uid);
@@ -85,7 +85,7 @@ const RegisterPage = (props) => {
                 setPasswordConfirmError('비밀번호를 다시 확인해주세요.')
                 return;
             }
-            
+
             const result = await createUserWithEmailAndPassword(auth, email, password).then((user) => {
                 return updateProfile(auth.currentUser,
                     {
@@ -101,7 +101,6 @@ const RegisterPage = (props) => {
                 handleLogin();
             }
         } catch (err) {
-            console.log(err);
             switch (err.code) {
                 case "auth/email-already-in-use":
                     setEmailError("이미 사용중인 이메일이에요.");
@@ -162,7 +161,7 @@ const RegisterPage = (props) => {
                     <p className={style.errorMsg}>{passwordConfirmError}</p>
                     <div className={style.btnContainer}>
                         <button onClick={handleSignup}>떡국 만들러가기</button>
-                        <button className={style.outlineButton} onClick={() => { navigate("/auth/login") }}>로그인 하러가기</button>
+                        {/* <button className={style.outlineButton} onClick={() => { navigate("/auth/login") }}>로그인 하러가기</button> */}
                     </div>
                 </div>
             </section>

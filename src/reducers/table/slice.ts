@@ -8,13 +8,15 @@ export const initialState = {
     error: "",
     soupList: [],
     ownerInfo: {},
-    totalCount : 0,
+    totalCount: 0,
     pageable: {
         page: 0,
         size: 4,
     },
     soupDetail: {},
     soupNo: null,
+
+    addSoupLoading: false,
 }
 
 const reducers = {
@@ -61,15 +63,15 @@ const reducers = {
         state.error = error;
     },
     addSoupLoad: (state) => {
-        state.isLoading = true;
+        state.addSoupLoading = true;
         state.success = false;
     },
     addSoupSuccess: (state) => {
-        state.isLoading = false;
+        state.addSoupLoading = false;
         state.success = true;
     },
     addSoupFail: (state, { payload: { error } }) => {
-        state.isLoading = false;
+        state.addSoupLoading = false;
         state.success = false;
         state.error = error;
     },
@@ -120,11 +122,15 @@ const selectTotalCountState = createSelector(
 )
 const selectSoupDetailState = createSelector(
     (state) => state.soupDetail,
-    (soupDetail) => soupDetail   
+    (soupDetail) => soupDetail
 )
 const selectSoupNoState = createSelector(
     (state) => state.soupNo,
     (soupNo) => soupNo
+)
+const selectAddSoupLoading = createSelector(
+    (state) => state.addSoupLoading,
+    (addSoupLoading) => addSoupLoading
 )
 
 export const soupSelector = {
@@ -138,6 +144,7 @@ export const soupSelector = {
     totalCount: (state) => selectTotalCountState(state[SOUP]),
     soupDetail: (state) => selectSoupDetailState(state[SOUP]),
     soupNo: (state) => selectSoupNoState(state[SOUP]),
+    addSoupLoading: (state) => selectAddSoupLoading(state[SOUP]),
 }
 
 export const SOUP = slice.name

@@ -21,7 +21,6 @@ const Layout = ({ pageTitle, children }) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
         const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims'];
-        console.log(hasuraClaim);
 
         dispatch(userAction.isSignUpLoad(user));
         dispatch(userAction.setAuthUser(user));
@@ -34,7 +33,6 @@ const Layout = ({ pageTitle, children }) => {
           axios.defaults.headers.common["Authorization"] = "Bearer " + idTokenResult.token;
         } else {
           const metadataRef = ref(database, 'metadata/' + user.uid + '/refreshTime');
-          console.log(metadataRef)
           onValue(metadataRef, async (snapshot) => {
             if (snapshot.exists()) {
               await user.getIdToken(true);

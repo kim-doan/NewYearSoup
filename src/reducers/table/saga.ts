@@ -42,11 +42,18 @@ export function* getSoupDetail() {
 
         const result = yield call(SoupAPI.getSoupDetail, soupNo);
 
-        console.log(result.data.SOUP_DETAIL)
         if (result.data.SOUP_DETAIL.length > 0) {
             yield put(
                 getSoupDetailSuccess({
                     soupDetail: result.data.SOUP_DETAIL[0]
+                })
+            )
+        } else {
+            yield put(
+                getSoupDetailSuccess({
+                    soupDetail: {
+                        SOUP_CONTENTS: '메시지는 "2022년 2월 1일"에 공개됩니다.'
+                    }
                 })
             )
         }
@@ -71,7 +78,7 @@ export function* addSoup() {
             sender: authUser.uid,
             message: message,
         }
-        
+
         const result = yield call(SoupAPI.addSoup, param);
 
         if (result) {

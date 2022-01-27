@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { auth, faceBookprovider, provider } from '../../firebase'
 import Layout from '../../components/layout'
 import { userAction } from "../../reducers/auth/slice";
-import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, getRedirectResult, signInWithRedirect } from "firebase/auth";
 import * as style from './login.module.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import { graphql, navigate, useStaticQuery } from "gatsby";
@@ -18,10 +18,6 @@ const LoginPage = (props) => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [progress, setProgress] = useState(false);
-
-    useEffect(() => {
-        console.log(props);
-    }, [props])
 
     const clearInputs = () => {
         setEmail('');
@@ -45,7 +41,7 @@ const LoginPage = (props) => {
                 if (redirect) {
                     navigate(redirect);
                 } else {
-                    navigate("/table/" + result.user.uid);    
+                    navigate("/table/" + result.user.uid);
                 }
             } else {
                 navigate("/table/" + result.user.uid);
@@ -70,27 +66,25 @@ const LoginPage = (props) => {
         clearInputs();
     };
 
-    useEffect(() => {
-        console.log(progress)
-    }, [progress])
+    const googleLogin = async () => {
 
-    const googleLogin = () => {
-        
-        signInWithPopup(auth, provider).then((result) => {
+        await signInWithRedirect(auth, provider)
+
+        getRedirectResult(auth).then((result) => {
             // const credential = GoogleAuthProvider.credentialFromResult(result);
             // const token = credential.accessToken;
-            
+
             setProgress(true);
 
             const param = {
-                userId : result.user.uid,
-                userName : result.user.displayName,
-                userEmail : result.user.email,
+                userId: result.user.uid,
+                userName: result.user.displayName,
+                userEmail: result.user.email,
             }
 
             AuthAPI.addUser(param).then(() => {
                 const state = props.location.state;
-                
+
                 if (state) {
                     const redirect = state.redirect;
                     navigate(redirect);
@@ -112,9 +106,9 @@ const LoginPage = (props) => {
             setProgress(true);
 
             const param = {
-                    userId : result.user.uid,
-                    userName : result.user.displayName,
-                    userEmail : result.user.email,
+                userId: result.user.uid,
+                userName: result.user.displayName,
+                userEmail: result.user.email,
             }
 
             AuthAPI.addUser(param).then(() => {
@@ -177,9 +171,9 @@ const LoginPage = (props) => {
                             <button onClick={handleLogin} onKeyPress={onKeyPress}>떡국 만들러가기</button>
                             <button className={style.outlineButton} onClick={() => { navigate("/auth/register") }}>회원가입 하러가기</button>
                             <p>다른 서비스 계정으로 로그인</p>
-                            <button className={style.outlineButton} onClick={googleLogin}><FaGoogle /> 구글 계정으로 로그인</button>
+                            {/* <button className={style.outlineButton} onClick={googleLogin}><FaGoogle /> 구글 계정으로 로그인</button> */}
                             <button className={style.outlineButton} onClick={faceBookLogin}><FaFacebook /> 페이스북 계정으로 로그인</button>
-                            <button onClick={handleLogout}>로그아웃</button>
+                            {/* <button onClick={handleLogout}>로그아웃</button> */}
                         </div>
                     </div>
                 }

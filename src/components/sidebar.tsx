@@ -8,6 +8,7 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
+import _ from 'lodash';
 
 const Nav = styled.div`
   background: #9c4b3a;
@@ -62,7 +63,22 @@ const SideBar = ({ pageTitle, children }) => {
               <AiIcons.AiOutlineClose onClick={showSidebar} />
             </NavIcon>
             {SidebarData.map((item, index) => {
-                return <SubMenu item={item} key={index} />;
+              if (item.title === "로그아웃") {
+                return <SubMenu item={item} key={index} onClick={() => {
+                  signOut(auth).then(() => {
+                    window.location.reload();
+                    alert("로그아웃했습니다.")
+                  });
+                }} />;
+              } else if (item.title == "내 밥상 보러가기") {
+                if (auth.currentUser) {
+                  item.path = `/table/${auth.currentUser.uid}`;
+                }
+                return <SubMenu item={item} key={index} onClick={() => {
+                }} />;
+              } else {
+                return <SubMenu item={item} key={index} onClick={null} />;
+              }
             })}
           </SidebarWrap>
         </SidebarNav>

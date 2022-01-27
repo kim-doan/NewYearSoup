@@ -32,6 +32,12 @@ const reducers = {
     },
     setSoupImgId: (state, { payload: soupImgId }) => {
         state.soupImgId = soupImgId;
+    },
+    clearTray: (state) => {
+        state.bowl = "bowl1";
+        state.decorations = [];
+        state.message = "";
+        state.soupImgId = "";
     }
 }
 

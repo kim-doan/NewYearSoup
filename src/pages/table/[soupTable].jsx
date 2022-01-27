@@ -16,7 +16,6 @@ import * as _ from 'lodash'
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
     const isSearchUser = useSelector(userSelector.isSearchUser);
-    const isSignUp = useSelector(userSelector.isSignUp);
     const isLoading = useSelector(userSelector.isLoading);
     const searchUserInfo = useSelector(userSelector.searchUserInfo);
     const soupList = useSelector(soupSelector.soupList);
@@ -40,7 +39,7 @@ const SoupTablePage = (props) => {
         dispatch(soupAction.clearSoupList());
         dispatch(userAction.getUserLoad({ uid: props.params.soupTable }));
         dispatch(soupAction.getSoupLoad({ userId: props.params.soupTable, page: 0 }))
-    }, [])   
+    }, [])
 
     useEffect(() => {
         setTotalPage(Math.ceil(totalCount / pageable.size));
@@ -51,8 +50,9 @@ const SoupTablePage = (props) => {
     }
 
     const LinkCopy = () => {
-        navigator.clipboard.writeText(props.location.href);
-        alert("클립보드에 복사되었습니다.")
+        navigator.clipboard.writeText(props.location.href).then(() => {
+            alert("클립보드에 복사되었습니다.")
+        });
     }
 
     const CreateSoup = () => {
@@ -60,18 +60,13 @@ const SoupTablePage = (props) => {
     }
 
     const SoupDetail = (e, soupNo) => {
-        console.log(soupNo)
-        dispatch(soupAction.getSoupDetailLoad({ soupNo : soupNo }));
+        dispatch(soupAction.getSoupDetailLoad({ soupNo: soupNo }));
         setOpen(true);
     }
 
     const onClose = () => {
         setOpen(false);
     }
-
-    useEffect(() => {
-        console.log(soupList);
-    }, [soupList])
 
     return (
         <Layout>
@@ -82,7 +77,7 @@ const SoupTablePage = (props) => {
                         value={soupDetail.SOUP_CONTENTS}
                         readOnly={true}
                         spellCheck={false}></textarea>
-                        
+
                 </div>
             </Popup>
             <section className="defaultPanel">
