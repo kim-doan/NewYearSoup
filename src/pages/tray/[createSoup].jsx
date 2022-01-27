@@ -80,6 +80,7 @@ const CreateSoupPage = (props) => {
                     () => {
                         dispatch(trayAction.setSoupImgId(storageRef.name));
                         dispatch(soupAction.addSoupLoad());
+
                     }
                 )
             })
