@@ -8,7 +8,7 @@ import { IconContext } from 'react-icons/lib';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import _ from 'lodash';
-import { SidebarData } from './SidebarData';
+import { SidebarData } from './SidebarData.js';
 
 const Nav = styled.div`
   background: #9c4b3a;
