@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { auth, faceBookprovider, provider } from '../../firebase'
+import { useDispatch, useSelector } from "react-redux";
+import { auth, faceBookprovider, provider, twitterProvider } from '../../firebase'
 import Layout from '../../components/layout'
-import { userAction } from "../../reducers/auth/slice";
+import { userAction, userSelector } from "../../reducers/auth/slice";
 import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, getRedirectResult, signInWithRedirect } from "firebase/auth";
 import * as style from './login.module.css';
-import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { FaGoogle, FaFacebook, FaTwitter } from 'react-icons/fa';
 import { graphql, navigate, useStaticQuery } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
 import { AuthAPI } from "../../api/auth";
@@ -18,6 +18,8 @@ const LoginPage = (props) => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [progress, setProgress] = useState(false);
+
+    const isSignUp = useSelector(userSelector.isSignUp);
 
     const clearInputs = () => {
         setEmail('');
@@ -41,7 +43,7 @@ const LoginPage = (props) => {
                 if (redirect) {
                     navigate(redirect);
                 } else {
-                    navigate("/table/" + result.user.uid);
+                    navigate(-1);
                 }
             } else {
                 navigate("/table/" + result.user.uid);
@@ -116,11 +118,53 @@ const LoginPage = (props) => {
 
                 if (state) {
                     const redirect = state.redirect;
-                    navigate(redirect);
+                    if (redirect) {
+                        navigate(redirect);
+                    } else {
+                        navigate(-1);
+                    }
                 } else {
                     navigate("/table/" + result.user.uid);
                 }
                 setProgress(false);
+            }).catch(() => {
+                setProgress(false);
+                navigate("/table/" + result.user.uid);
+            })
+        }).catch((error) => {
+            console.log(error.code);
+        })
+    }
+
+    const twitterLogin = async () => {
+        await signInWithPopup(auth, twitterProvider).then((result) => {
+            // const credential = FacebookAuthProvider.credentialFromResult(result);
+            // const token = credential.accessToken;
+
+            setProgress(true);
+
+            const param = {
+                userId: result.user.uid,
+                userName: result.user.displayName,
+                userEmail: result.user.email,
+            }
+
+            AuthAPI.addUser(param).then(() => {
+                const state = props.location.state;
+
+                if (state) {
+                    const redirect = state.redirect;
+                    if (redirect) {
+                        navigate(redirect);
+                    } else {
+                        navigate("/table/" + result.user.uid);
+                    }
+                } else {
+                    navigate("/table/" + result.user.uid);
+                }
+                setProgress(false);
+            }).catch(() => {
+                navigate("/table/" + result.user.uid);
             })
         }).catch((error) => {
             console.log(error.code);
@@ -133,7 +177,23 @@ const LoginPage = (props) => {
         }
     }
 
+    const onRegister = () => {
+        const state = props.location.state;
+
+        if (state) {
+            const redirect = state.redirect;
+            if (redirect) {
+                navigate("/auth/register", { state: { redirect: redirect } })
+            } else {
+                navigate("/auth/register");
+            }
+        } else {
+            navigate("/auth/register");
+        }
+    }
+
     const handleLogout = async () => {
+
         await signOut(auth);
     };
 
@@ -165,14 +225,16 @@ const LoginPage = (props) => {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyPress={onKeyPress}
                         />
                         <p className={style.errorMsg}>{passwordError}</p>
                         <div className={style.btnContainer}>
-                            <button onClick={handleLogin} onKeyPress={onKeyPress}>떡국 만들러가기</button>
-                            <button className={style.outlineButton} onClick={() => { navigate("/auth/register") }}>회원가입 하러가기</button>
+                            <button onClick={handleLogin}>떡국 만들러가기</button>
+                            <button className={style.outlineButton} onClick={onRegister}>회원가입 하러가기</button>
                             <p>다른 서비스 계정으로 로그인</p>
                             {/* <button className={style.outlineButton} onClick={googleLogin}><FaGoogle /> 구글 계정으로 로그인</button> */}
                             <button className={style.outlineButton} onClick={faceBookLogin}><FaFacebook /> 페이스북 계정으로 로그인</button>
+                            {/* <button className={style.outlineButton} onClick={twitterLogin}><FaTwitter /> 트위터 계정으로 로그인</button> */}
                             {/* <button onClick={handleLogout}>로그아웃</button> */}
                         </div>
                     </div>

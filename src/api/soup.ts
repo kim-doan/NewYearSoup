@@ -16,7 +16,7 @@ const request = {
         query:
             `
             query getSoupList($userId: String!, $page: Int!, $size: Int!) {
-                SOUP(where: {USER_ID: {_eq: $userId}}, limit: $size, offset: $page) {
+                SOUP(where: {USER_ID: {_eq: $userId}}, order_by: { SOUP_NO: desc }, limit: $size, offset: $page) {
                     SOUP_NO
                     SOUP_IMG_ID
                     CREATE_TIME
@@ -45,8 +45,8 @@ const request = {
         }
     }).then(responseBody),
     getSoupDetail: (soupNo: Number) => axios.post(endpoint, {
-        query: 
-        `
+        query:
+            `
             query getSoupDetail($soupNo: Int!) {
                 SOUP_DETAIL(where: { SOUP_NO:{_eq:$soupNo} }) {
                     USER_ID
@@ -62,7 +62,7 @@ const request = {
     }).then(responseBody),
     addSoup: (param) => axios.post(endpoint, {
         query:
-        `
+            `
             mutation addSoup($userId: String!, $soupImgId: String!, $reqUserId: String!, $soupContents: String!) {
                 insert_SOUP(objects: {USER_ID: $userId, SOUP_IMG_ID: $soupImgId, REQ_USER_ID: $reqUserId, SOUP_DETAIL: {data: { SOUP_CONTENTS: $soupContents, USER_ID: $userId, REQ_USER_ID: $reqUserId }}}) {
                     affected_rows

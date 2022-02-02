@@ -2,7 +2,7 @@
 
 import firebase from 'firebase/app';
 import { initializeApp } from 'firebase/app';
-import { FacebookAuthProvider, getAuth, GoogleAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider, getAuth, GoogleAuthProvider, TwitterAuthProvider } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
@@ -31,3 +31,4 @@ export const database = getDatabase(app);
 export const storage = getStorage(app);
 export const provider = new GoogleAuthProvider();
 export const faceBookprovider = new FacebookAuthProvider();
+export const twitterProvider = new TwitterAuthProvider();

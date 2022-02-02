@@ -46,7 +46,7 @@ button {
   flex-direction: column;
   justify-content: center;
   background: #f5f2ed;
-  background-image: url("../../../assets/img/authBg.png");
+  /* background-image: url("../../../assets/img/authBg.png"); */
   background-repeat: round;
   background-size: cover;
 }

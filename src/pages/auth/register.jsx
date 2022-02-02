@@ -53,7 +53,18 @@ const RegisterPage = (props) => {
                     userEmail: result.user.email,
                 }
                 AuthAPI.addUser(param).then(() => {
-                    navigate("/table/" + result.user.uid);
+                    const state = props.location.state;
+
+                    if (state) {
+                        const redirect = state.redirect;
+                        if (redirect) {
+                            navigate(redirect);
+                        } else {
+                            navigate("/table/" + result.user.uid);
+                        }
+                    } else {
+                        navigate("/table/" + result.user.uid);
+                    }
                 })
             }
         } catch (err) {

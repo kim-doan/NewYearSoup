@@ -12,6 +12,7 @@ import { navigate } from "gatsby";
 import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
 import * as _ from 'lodash'
+import { auth } from "../../firebase";
 
 const SoupTablePage = (props) => {
     const dispatch = useDispatch();
@@ -51,12 +52,21 @@ const SoupTablePage = (props) => {
 
     const LinkCopy = () => {
         navigator.clipboard.writeText(props.location.href).then(() => {
-            alert("클립보드에 복사되었습니다.")
+            alert("클립보드에 복사되었습니다. 친구들에게 링크를 공유해주세요.")
         });
     }
 
     const CreateSoup = () => {
-        navigate("/tray/" + props.params.soupTable)
+        if (auth.currentUser && searchUserInfo) {
+            if (auth.currentUser.uid === searchUserInfo["USER_ID"]) {
+                alert("나 자신에게는 떡국을 남길 수 없어요. 친구에게 링크를 보내주세요.")
+            } else {
+                navigate("/tray/" + props.params.soupTable)
+            }
+        } else {
+            navigate("/auth/login", { state: { redirect: props.location.pathname } })
+            alert("떡국을 전달하기 위해 로그인해주세요.")
+        }
     }
 
     const SoupDetail = (e, soupNo) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as AiIcons from 'react-icons/ai';
 
-export default SidebarData = [
+export const SidebarData = [
   {
     title: '홈 화면으로 이동',
     path: '/',
@@ -11,6 +11,11 @@ export default SidebarData = [
     title: '내 밥상 보러가기',
     path: '/auth/login',
     icon: <AiIcons.AiFillProfile />,
+  },
+  {
+    title: '후원하기',
+    path: '/sponsor',
+    icon: <AiIcons.AiFillMoneyCollect />,
   },
   {
     title: '로그아웃',
