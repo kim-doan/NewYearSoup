@@ -1,54 +1,64 @@
 <p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
+  <a href="https://newyearsoup.web.app">
+    <img alt="NewYearSoup" src="https://user-images.githubusercontent.com/40855198/154653436-341cf99f-f2d5-4cc6-8f47-ebdc9a488469.png" width="150" />
   </a>
 </p>
 <h1 align="center">
-  Gatsby minimal starter
+  내 떡국을 끓여줘
 </h1>
 
-## 🚀 Quick start
+## 🚀 사용 기술
 
-1.  **Create a Gatsby site.**
+**Back-End**
+- Hasura GraphQL
+- PostgreSQL
+- Firebase Authentication
+- Firebase Realtime Database
+- Firebase Functions (node.js v10)
+- Firebase Storage
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+**Front-End**
+- Gatsby.js
+- TypeScript(40%)
+- redux
+- redux-saga
+- redux-toolkit
+- axios
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+## 🚀 개발 내역
 
-2.  **Start developing.**
+**1.  계정 및 사용자 관리**
 
-    Navigate into your new site’s directory and start it up.
+    - Firebase Authentication 연동
+    - 사용자 로그인
+    - 사용자 회원가입
+    - 사용자 프로필 DB 저장
+    - Firebase <-> Hasura 인증권한 연동
+    
+    
+  <img alt="Hasura Permissions" src="https://user-images.githubusercontent.com/40855198/154654592-442b020b-7fb2-44b2-aeab-5b86a2b6c573.png" width="1000" />
+  <img alt="Auth" src="https://user-images.githubusercontent.com/40855198/154658348-889c1358-b4f2-4678-aa97-665082e3683f.png" width="1000" />
+  
+**2.  내 밥상 보기**
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+    - 나에게 전달된 떡국 보기
+    - 나에게 전달된 메시지 보기 
+    - 메시지 이벤트 스케줄링 (관리자가 지정한 날짜 이전에는 메시지를 볼 수 없음)
+    - 링크 복사하기
+    
+    
+<img alt="Table" src="https://user-images.githubusercontent.com/40855198/154658688-61cbc561-4465-4100-bcc7-172db265e8b3.png" width="1000" />
 
-3.  **Open the code and start customizing!**
+**3. 떡국 전해주기**
 
-    Your site is now running at http://localhost:8000!
+    - 떡국 만들기
+    - 완성 떡국 이미지 캡처 (html2Canvas 사용)
+    - Firebase Storage 업로드
+    - 메시지 저장
 
-    Edit `src/pages/index.js` to see your site update in real-time!
 
-4.  **Learn more**
+<img alt="Table" src="https://user-images.githubusercontent.com/40855198/154659278-befe1210-5270-4baa-aa64-74d4ee63f524.png" width="1000" />
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+## 🚀 사이트 URL
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
+https://newyearsoup.web.app/
